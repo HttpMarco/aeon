@@ -25,9 +25,10 @@ dependencies {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
+
 publishing {
     publications {
-        create("mavne_public", MavenPublication::class) {
+        create("maven_public", MavenPublication::class) {
             groupId =  "net.http.aeon"
             artifactId = "Aeon"
             version = "1.0.0"
