@@ -12,8 +12,14 @@
 
 Gradle Dependency
 
-`````kotlin
+`````json
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
+dependencies {
+    implementation 'com.github.HttpMarco:Aeon:TAG'
+}
 `````
 
 ****
