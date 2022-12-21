@@ -7,7 +7,10 @@ public class DefaultObjectMapper {
     @Test
     public void handle() {
 
-        Aeon.insert(new TestConfiguration(20));
+        TestConfiguration insert = Aeon.insert(new TestConfiguration(20));
+
+
+
 
     }
 

@@ -42,6 +42,13 @@ public final class PatternLayerHandler {
         return aeonSection;
     }
 
+    public <T> T read(T object, AeonSection section) {
+
+        //TODO: overwrite
+
+        return object;
+    }
+
     private Optional<PatternLayer> findPattern(Field field) {
         return Arrays.stream(this.layers).filter(it -> it.isPresent(field.getType())).findFirst();
     }

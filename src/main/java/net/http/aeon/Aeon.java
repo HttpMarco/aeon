@@ -1,5 +1,6 @@
 package net.http.aeon;
 
+import net.http.aeon.io.AeonReader;
 import net.http.aeon.io.AeonWriter;
 import net.http.aeon.pattern.PatternLayerHandler;
 
@@ -9,17 +10,11 @@ public final class Aeon {
 
     public static <T> T insert(T object) {
         if (!AeonHelper.isPresent(object)) {
-
-            var section = patternLayerHandler.write(object);
-
             //write
-            AeonWriter.write(AeonHelper.getPath(object), section);
-
+            AeonWriter.write(AeonHelper.getPath(object), patternLayerHandler.write(object));
             return object;
         }
-
-        //TODO READ
-        return null;
+        //get the current object version and overwrite values
+        return patternLayerHandler.read(object, AeonReader.read(AeonHelper.getPath(object)));
     }
-
 }
