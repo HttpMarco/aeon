@@ -7,3 +7,13 @@ dependencyResolutionManagement {
     }
 }
 
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+
+rootProject.name = "Aeon"
+
