@@ -5,6 +5,7 @@
 <a href="https://github.com/HttpMarco/Aeon"><img src="https://img.shields.io/github/issues-pr/HttpMarco/Aeon?color=10c298" alt="Pull Requests Badge"/></a>
 <a href="https://github.com/HttpMarco/Aeon"><img src="https://img.shields.io/github/issues/HttpMarco/Aeon?color=10c298" alt="Issues Badge"/></a>
 <a href="https://github.com/HttpMarco/Aeon"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/HttpMarco/Aeon?color=10c298"></a>
+[![](https://jitpack.io/v/HttpMarco/Aeon.svg)](https://jitpack.io/#HttpMarco/Aeon)
 </div>
 
 ****

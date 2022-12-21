@@ -3,8 +3,11 @@ plugins {
     id("maven-publish")
 }
 
-group = "net.http.aeon"
-version = "1.0.0"
+allprojects {
+    group = "net.http.aeon"
+    version = "1.0.0"
+    description = "Configuration Framework"
+}
 
 repositories {
     mavenCentral()
