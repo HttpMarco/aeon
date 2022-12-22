@@ -12,7 +12,7 @@
 
 Gradle Dependency
 
-`````json
+````xml
 repositories {
     maven { url 'https://jitpack.io' }
 }
@@ -20,7 +20,7 @@ repositories {
 dependencies {
     implementation 'com.github.HttpMarco:Aeon:TAG'
 }
-`````
+````
 
 ****
 
