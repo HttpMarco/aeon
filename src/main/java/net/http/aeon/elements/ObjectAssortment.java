@@ -7,4 +7,8 @@ public final class ObjectAssortment extends ObjectUnit {
 
     private final Map<String, ObjectUnit> units = new HashMap<>();
 
+    public void append(String key, ObjectUnit unit) {
+        this.units.put(key, unit);
+    }
+
 }
