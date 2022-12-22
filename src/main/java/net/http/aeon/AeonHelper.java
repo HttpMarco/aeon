@@ -18,7 +18,7 @@ public final class AeonHelper {
 
     public static Path getPath(Object object) {
         if (object.getClass().isAnnotationPresent(PropertyOption.class)) {
-            PropertyOption option = object.getClass().getDeclaredAnnotation(PropertyOption.class);
+            var option = object.getClass().getDeclaredAnnotation(PropertyOption.class);
             return Path.of(option.path()).resolve((option.name().isEmpty() ? object.getClass().getSimpleName() : option.name()) + FILE_EXTENSION);
         }
         return Path.of(object.getClass().getSimpleName() + FILE_EXTENSION);
