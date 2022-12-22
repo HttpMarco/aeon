@@ -3,8 +3,7 @@ package net.http.aeon;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-public class TestConfiguration {
+public final class TestConfiguration {
 
     @Getter
     private int coins;
