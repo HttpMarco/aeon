@@ -17,7 +17,9 @@ public final class Aeon {
             return value;
         }
 
+        var unit = instance.getReader().read(value);
         //todo write in file
+
         return value;
     }
 

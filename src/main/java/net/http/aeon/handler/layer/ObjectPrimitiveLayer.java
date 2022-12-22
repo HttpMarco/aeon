@@ -1,5 +1,6 @@
 package net.http.aeon.handler.layer;
 
+import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 
@@ -11,8 +12,8 @@ public final class ObjectPrimitiveLayer implements ObjectPattern {
     }
 
     @Override
-    public ObjectUnit write(Object o) {
-        return null;
+    public ObjectUnit write(Object value) {
+        return new ObjectPrimitive(value);
     }
 
 }

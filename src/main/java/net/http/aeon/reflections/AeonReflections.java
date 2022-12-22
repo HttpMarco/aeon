@@ -10,6 +10,7 @@ public final class AeonReflections {
 
     @SneakyThrows
     public static Object get(Field field, Object object) {
+        field.setAccessible(true);
         return field.get(object);
     }
 

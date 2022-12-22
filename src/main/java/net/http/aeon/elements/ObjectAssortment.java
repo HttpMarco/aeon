@@ -11,4 +11,8 @@ public final class ObjectAssortment extends ObjectUnit {
         this.units.put(key, unit);
     }
 
+    public ObjectUnit get(String key) {
+        return this.units.get(key);
+    }
+
 }
