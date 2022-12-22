@@ -3,6 +3,7 @@ package net.http.aeon;
 import lombok.NonNull;
 import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.handler.ObjectHandler;
+import net.http.aeon.io.FileInstanceWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
 public final class Aeon {
@@ -18,8 +19,7 @@ public final class Aeon {
         }
 
         var unit = instance.getReader().read(value);
-        //todo write in file
-
+        FileInstanceWriter.write(AeonPathFinder.find(value), unit);
         return value;
     }
 
