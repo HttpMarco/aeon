@@ -2,7 +2,7 @@ package net.http.aeon;
 
 import org.junit.jupiter.api.Test;
 
-public class DefaultObjectMapper {
+public class DefaultObjectMapperTest {
 
     @Test
     public void handle() {
@@ -10,7 +10,7 @@ public class DefaultObjectMapper {
 
 
         TestConfiguration insert = Aeon.insert(new TestConfiguration(20));
-        insert.getCoins();
+        System.out.println(insert.getCoins());
 
     }
 

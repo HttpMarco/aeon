@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-package net.http.aeon.handler;
+package net.http.aeon.reflections;
 
-import net.http.aeon.elements.ObjectUnit;
+import lombok.SneakyThrows;
 
-public interface ObjectPattern {
+import java.io.BufferedWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-    boolean isElement(Class<?> clazz);
+public final class BufferedFileInstance extends BufferedWriter {
 
-    ObjectUnit write(Object o);
+    @SneakyThrows
+    public BufferedFileInstance(Path path) {
+        super(Files.newBufferedWriter(path));
+    }
 
+    @SneakyThrows
+    public BufferedFileInstance append(String component) {
+        super.append(component);
+        return this;
+    }
+
+    public void next() {
+        append("\n");
+    }
 }

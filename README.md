@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
 <a href="https://github.com/HttpMarco/Aeon"><img src="https://img.shields.io/github/stars/HttpMarco/Aeon?color=10c298" alt="Stars Badge"/></a>

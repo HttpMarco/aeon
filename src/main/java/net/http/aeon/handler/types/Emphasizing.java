@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package net.http.aeon.handler;
+package net.http.aeon.handler.types;
 
-import net.http.aeon.elements.ObjectUnit;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public interface ObjectPattern {
+@Getter
+@AllArgsConstructor
+public enum Emphasizing {
 
-    boolean isElement(Class<?> clazz);
+    NONE(false, false),
+    TOP(true, false),
+    BOTTOM(false, true),
+    PRIMARY(true, true);
 
-    ObjectUnit write(Object o);
+    final boolean spacerBefore;
+    final boolean spacerAfter;
 
 }

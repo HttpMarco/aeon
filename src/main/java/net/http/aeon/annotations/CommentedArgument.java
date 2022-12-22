@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package net.http.aeon.handler;
+package net.http.aeon.annotations;
 
-import net.http.aeon.elements.ObjectUnit;
+import net.http.aeon.handler.types.Emphasizing;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface ObjectPattern {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface CommentedArgument {
 
-    boolean isElement(Class<?> clazz);
+    String[] comment() default {};
 
-    ObjectUnit write(Object o);
+    Emphasizing type() default Emphasizing.NONE;
 
 }
