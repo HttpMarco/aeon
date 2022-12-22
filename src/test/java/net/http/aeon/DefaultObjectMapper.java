@@ -7,10 +7,10 @@ public class DefaultObjectMapper {
     @Test
     public void handle() {
 
+
+
         TestConfiguration insert = Aeon.insert(new TestConfiguration(20));
-
-
-
+        insert.getCoins();
 
     }
 

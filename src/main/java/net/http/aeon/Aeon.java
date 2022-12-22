@@ -1,20 +1,22 @@
 package net.http.aeon;
 
-import net.http.aeon.io.AeonReader;
-import net.http.aeon.io.AeonWriter;
-import net.http.aeon.pattern.PatternLayerHandler;
+import lombok.NonNull;
+import net.http.aeon.exceptions.NotImplementedException;
+import net.http.aeon.handler.ObjectHandler;
 
 public final class Aeon {
 
-    private static final PatternLayerHandler patternLayerHandler = new PatternLayerHandler();
+    public static final @NonNull ObjectHandler instance = new ObjectHandler();
 
-    public static <T> T insert(T object) {
-        if (!AeonHelper.isPresent(object)) {
-            //write
-            AeonWriter.write(AeonHelper.getPath(object), patternLayerHandler.write(object));
-            return object;
-        }
-        //get the current object version and overwrite values
-        return patternLayerHandler.read(object, AeonReader.read(AeonHelper.getPath(object)));
+    public static <T> T insert(@NonNull T value) {
+        throw new NotImplementedException();
+    }
+
+    public static void delete(@NonNull Object value) {
+        throw new NotImplementedException();
+    }
+
+    public static <T> T update(@NonNull T value) {
+        throw new NotImplementedException();
     }
 }
