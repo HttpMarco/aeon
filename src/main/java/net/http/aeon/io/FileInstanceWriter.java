@@ -21,6 +21,7 @@ import net.http.aeon.annotations.CommentedArgument;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
+import net.http.aeon.reflections.AeonReflections;
 import net.http.aeon.reflections.BufferedFileInstance;
 
 import java.nio.file.Path;
@@ -42,8 +43,8 @@ public final class FileInstanceWriter {
                 this.writer.next();
             }
             //send more lines comment
-            if (it.comment().length > 1) {
-                this.writer.append("#").append(String.join("\n#", it.comment())).next();
+            if (it.comment().length > 0) {
+                this.writer.append("#").append(AeonReflections.EMTPY_STRING).append(String.join("\n#", it.comment())).next();
             }
         });
         this.writeElement(null, unit);
