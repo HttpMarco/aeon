@@ -7,6 +7,7 @@ import net.http.aeon.handler.layer.ObjectAssortmentLayer;
 
 public final class ObjectPatternWriter {
 
+    @SuppressWarnings("unchecked")
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
         var instancePattern = Aeon.instance.findPattern(clazz);
 

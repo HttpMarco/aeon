@@ -19,7 +19,6 @@ package net.http.aeon.handler.layer;
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
 
@@ -51,6 +50,7 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
                 field.setAccessible(true);
                 try {
                     //todo add transformer for String to current object.
+                    //noinspection unchecked
                     field.set(instance, Aeon.instance.findPattern(field.getType()).map(it -> it.read(field.getType(), assortment.get(field.getName()))).orElse(null));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);

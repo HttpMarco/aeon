@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class PrimitiveDataTest {
 
+    @SuppressWarnings("TestFailedLine")
     @Test
     public void test() {
 

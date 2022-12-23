@@ -23,6 +23,7 @@ import net.http.aeon.io.FileInstanceReader;
 import net.http.aeon.io.FileInstanceWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
+@SuppressWarnings("ALL")
 public final class Aeon {
 
     public static final String FILE_EXTENSION = ".ae";

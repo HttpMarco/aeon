@@ -13,7 +13,7 @@
 
 Gradle Dependency
 
-````xml
+````groovy
 repositories {
     maven { url 'https://jitpack.io' }
 }
@@ -31,7 +31,8 @@ Maven Dependency
     <id>jitpack.io</id>
     <url>https://jitpack.io</url>
 </repository>
-
+````
+````xml
 <dependency>
     <groupId>com.github.HttpMarco</groupId>
     <artifactId>Aeon</artifactId>

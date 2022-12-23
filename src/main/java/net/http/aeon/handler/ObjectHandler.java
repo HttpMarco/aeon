@@ -25,6 +25,7 @@ import net.http.aeon.handler.reader.ObjectPatternWriter;
 import java.util.Arrays;
 import java.util.Optional;
 
+@SuppressWarnings("rawtypes")
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
@@ -39,6 +40,7 @@ public final class ObjectHandler {
         this.writer = new ObjectPatternWriter();
     }
 
+    @SuppressWarnings("unchecked")
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
     }
