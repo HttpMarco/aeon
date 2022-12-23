@@ -33,8 +33,11 @@ public final class Aeon {
 
         if(AeonPathFinder.isPresent(value)) {
             var unt = new FileInstanceReader(AeonPathFinder.find(value)).read();
-            //todo override
-            return value;
+
+
+            instance.getWriter().as(unt, value.getClass());
+            //todo write new properties from file
+            return (T) instance.getWriter().as(unt, value.getClass());
         }
 
         var unit = instance.getReader().read(value);

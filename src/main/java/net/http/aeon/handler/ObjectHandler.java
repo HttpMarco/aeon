@@ -20,6 +20,8 @@ import lombok.Getter;
 import net.http.aeon.handler.layer.ObjectAssortmentLayer;
 import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
 import net.http.aeon.handler.reader.ObjectPatternReader;
+import net.http.aeon.handler.reader.ObjectPatternWriter;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -29,9 +31,12 @@ public final class ObjectHandler {
 
     @Getter
     private final ObjectPatternReader reader;
+    @Getter
+    private final ObjectPatternWriter writer;
 
     public ObjectHandler() {
         this.reader = new ObjectPatternReader();
+        this.writer = new ObjectPatternWriter();
     }
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {

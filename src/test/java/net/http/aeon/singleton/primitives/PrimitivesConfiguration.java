@@ -11,6 +11,7 @@ import net.http.aeon.handler.types.Emphasizing;
 public final class PrimitivesConfiguration {
 
     private final int value;
+    private final String value2 = "abc";
 
     public PrimitivesConfiguration() {
         this.value = 300;

@@ -18,10 +18,12 @@ package net.http.aeon.handler;
 
 import net.http.aeon.elements.ObjectUnit;
 
-public interface ObjectPattern {
+public interface ObjectPattern<T> {
 
     boolean isElement(Class<?> clazz);
 
     ObjectUnit write(Object o);
+
+    T read(Class<T> clazz, ObjectUnit unit);
 
 }
