@@ -16,12 +16,11 @@
 
 package net.http.aeon.io;
 
-import lombok.SneakyThrows;
+import lombok.Getter;
 import net.http.aeon.annotations.CommentedArgument;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.reflections.BufferedFileInstance;
 
 import java.nio.file.Path;
@@ -29,6 +28,7 @@ import java.util.Optional;
 
 public final class FileInstanceWriter {
 
+    @Getter
     private final BufferedFileInstance writer;
 
     public FileInstanceWriter(Object value, Path path, ObjectUnit unit) {
@@ -56,7 +56,7 @@ public final class FileInstanceWriter {
         if (unit instanceof ObjectAssortment assortment) {
             writeAssortment(key, assortment);
         } else if (unit instanceof ObjectPrimitive primitive) {
-            writePrimitive(key, primitive);
+            writePrimitive(key, primitive, 0);
         }
     }
 
@@ -65,14 +65,16 @@ public final class FileInstanceWriter {
             //main assortment is present
             assortment.getUnits().forEach(this::writeElement);
         } else {
-            //todo
             //sub assortment in assortment
-            throw new NotImplementedYetException();
+            new FileAssortmentSubWriter(key, assortment, this, 0).handle();
         }
     }
 
-    private void writePrimitive(String key, ObjectPrimitive primitive) {
-        this.writer.append(key).append(": ").append(primitive.getValue().toString()).next();
+    public void writePrimitive(String key, ObjectPrimitive primitive, int distance) {
+        this.writer.append(space(distance)).append(key).append(": ").append(primitive.getValue().toString()).next();
     }
 
+    public String space(int distance) {
+        return " ".repeat(distance * 3);
+    }
 }
