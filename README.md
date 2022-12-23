@@ -39,4 +39,5 @@ Maven Dependency
 </dependency>
 ````
 
+The newest version: https://jitpack.io/#HttpMarco/Aeon
 
