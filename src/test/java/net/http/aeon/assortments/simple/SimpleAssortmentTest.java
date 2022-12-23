@@ -8,6 +8,10 @@ public class SimpleAssortmentTest {
     @Test
     public void handle() {
         TestConfiguration insert = Aeon.insert(new TestConfiguration());
+
+        System.out.println(insert.getTest());
+        System.out.println(insert.getTestObject1().getElement1());
+
     }
 
 }

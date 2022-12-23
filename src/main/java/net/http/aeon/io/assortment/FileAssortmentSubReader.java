@@ -9,7 +9,8 @@ import java.util.List;
 
 public final class FileAssortmentSubReader {
 
-    private List<String> nextLines;
+    private final List<String> nextLines;
+
     @Getter
     private int index = 0;
 
@@ -21,6 +22,7 @@ public final class FileAssortmentSubReader {
         var objectAssortment = new ObjectAssortment();
 
         for (int index = 0; index < nextLines.size(); index++) {
+            this.index = index;
             var line = nextLines.get(index);
             if (line.contains(": ")) {
                 reader.readPrimitives(line, objectAssortment);
