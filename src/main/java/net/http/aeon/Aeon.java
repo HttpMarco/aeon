@@ -1,20 +1,55 @@
+/*
+ * Copyright 2022 Aeon contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.http.aeon;
 
-import net.http.aeon.io.AeonReader;
-import net.http.aeon.io.AeonWriter;
-import net.http.aeon.pattern.PatternLayerHandler;
+import lombok.NonNull;
+import net.http.aeon.exceptions.NotImplementedYetException;
+import net.http.aeon.handler.ObjectHandler;
+import net.http.aeon.io.FileInstanceReader;
+import net.http.aeon.io.FileInstanceWriter;
+import net.http.aeon.reflections.AeonPathFinder;
 
 public final class Aeon {
 
-    private static final PatternLayerHandler patternLayerHandler = new PatternLayerHandler();
+    public static final String FILE_EXTENSION = ".ae";
+    public static final ObjectHandler instance = new ObjectHandler();
 
-    public static <T> T insert(T object) {
-        if (!AeonHelper.isPresent(object)) {
-            //write
-            AeonWriter.write(AeonHelper.getPath(object), patternLayerHandler.write(object));
-            return object;
+    public static <T> T insert(@NonNull T value) {
+
+
+        if(AeonPathFinder.isPresent(value)) {
+            var unt = new FileInstanceReader(AeonPathFinder.find(value)).read();
+            System.out.println(unt.assortment().get("coins").primitives().getValue());
+            //todo override
+            return value;
         }
-        //get the current object version and overwrite values
-        return patternLayerHandler.read(object, AeonReader.read(AeonHelper.getPath(object)));
+
+        var unit = instance.getReader().read(value);
+        System.out.println(unit.assortment().get("coins").primitives().getValue());
+        new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
+        return value;
     }
+
+    public static void delete(@NonNull Object value) {
+        throw new NotImplementedYetException();
+    }
+
+    public static <T> T update(@NonNull T value) {
+        throw new NotImplementedYetException();
+    }
+
 }

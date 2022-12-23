@@ -34,7 +34,6 @@ manifest.mf
 
 # gradle
 .gradle/
-build/
 
 # other files
 *.log*
