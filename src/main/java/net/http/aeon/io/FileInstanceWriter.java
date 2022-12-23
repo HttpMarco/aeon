@@ -16,6 +16,7 @@
 
 package net.http.aeon.io;
 
+import lombok.SneakyThrows;
 import net.http.aeon.annotations.CommentedArgument;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
@@ -40,29 +41,29 @@ public final class FileInstanceWriter {
             if (it.type().isSpacerBefore()) {
                 this.writer.next();
             }
-
             //send more lines comment
             if (it.comment().length > 1) {
                 this.writer.append("#").append(String.join("\n#", it.comment())).next();
             }
         });
-        this.writeElement(unit, null);
+        this.writeElement(null, unit);
         //writer footer spacer
         supportCommentedArgument.stream().filter(it -> it.type().isSpacerAfter()).findFirst().ifPresent(commentedArgument -> this.writer.next());
+        this.writer.complete();
     }
 
-    private void writeElement(ObjectUnit unit, String key) {
+    private void writeElement(String key, ObjectUnit unit) {
         if (unit instanceof ObjectAssortment assortment) {
-            writeAssortment(assortment, key);
+            writeAssortment(key, assortment);
         } else if (unit instanceof ObjectPrimitive primitive) {
-            writePrimitive(primitive, key);
+            writePrimitive(key, primitive);
         }
     }
 
-    private void writeAssortment(ObjectAssortment assortment, String key) {
+    private void writeAssortment(String key, ObjectAssortment assortment) {
         if (key == null) {
             //main assortment is present
-            assortment.getUnits().forEach((s, unit) -> writeElement(unit, s));
+            assortment.getUnits().forEach(this::writeElement);
         } else {
             //todo
             //sub assortment in assortment
@@ -70,7 +71,7 @@ public final class FileInstanceWriter {
         }
     }
 
-    private void writePrimitive(ObjectPrimitive primitive, String key) {
+    private void writePrimitive(String key, ObjectPrimitive primitive) {
         this.writer.append(key).append(": ").append(primitive.getValue().toString()).next();
     }
 

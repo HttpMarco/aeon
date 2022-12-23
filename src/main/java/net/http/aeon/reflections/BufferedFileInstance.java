@@ -19,23 +19,36 @@ package net.http.aeon.reflections;
 import lombok.SneakyThrows;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class BufferedFileInstance extends BufferedWriter {
+public final class BufferedFileInstance  {
+
+    private final BufferedWriter bufferedWriter;
+
+    public BufferedFileInstance(Path path) {
+        try {
+            this.bufferedWriter = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @SneakyThrows
-    public BufferedFileInstance(Path path) {
-        super(Files.newBufferedWriter(path));
+    public void complete() {
+        this.bufferedWriter.flush();
+        this.bufferedWriter.close();
     }
 
     @SneakyThrows
     public BufferedFileInstance append(String component) {
-        super.append(component);
+        this.bufferedWriter.append(component);
         return this;
     }
 
     public void next() {
-        append("\n");
+        this.append("\n");
     }
 }

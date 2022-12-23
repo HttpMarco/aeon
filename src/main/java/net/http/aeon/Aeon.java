@@ -19,22 +19,27 @@ package net.http.aeon;
 import lombok.NonNull;
 import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.handler.ObjectHandler;
+import net.http.aeon.io.FileInstanceReader;
 import net.http.aeon.io.FileInstanceWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
 public final class Aeon {
 
     public static final String FILE_EXTENSION = ".ae";
-    public static final @NonNull ObjectHandler instance = new ObjectHandler();
+    public static final ObjectHandler instance = new ObjectHandler();
 
     public static <T> T insert(@NonNull T value) {
 
+
         if(AeonPathFinder.isPresent(value)) {
-            //todo read, override,
+            var unt = new FileInstanceReader(AeonPathFinder.find(value)).read();
+            System.out.println(unt.assortment().get("coins").primitives().getValue());
+            //todo override
             return value;
         }
 
         var unit = instance.getReader().read(value);
+        System.out.println(unit.assortment().get("coins").primitives().getValue());
         new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
         return value;
     }

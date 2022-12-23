@@ -10,7 +10,7 @@ public class DefaultObjectMapperTest {
 
 
         TestConfiguration insert = Aeon.insert(new TestConfiguration(20));
-        System.out.println(insert.getCoins());
+      //  System.out.println(insert.getCoins());
 
     }
 
