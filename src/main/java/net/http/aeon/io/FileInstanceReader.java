@@ -15,20 +15,18 @@
  */
 
 package net.http.aeon.io;
-
 import lombok.SneakyThrows;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.NotImplementedYetException;
-
+import net.http.aeon.io.assortment.FileAssortmentSubReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 public final class FileInstanceReader {
 
-    private final List<String> propertyLines;
+    private List<String> propertyLines;
 
     @SneakyThrows
     public FileInstanceReader(Path path) {
@@ -37,23 +35,24 @@ public final class FileInstanceReader {
 
     public ObjectUnit read() {
         var assortment = new ObjectAssortment();
+        this.propertyLines = this.propertyLines.stream().map(String::trim).filter(it -> !(it.isEmpty() || it.startsWith("#"))).toList();
+
+        var id = 0;
         for (var line : propertyLines) {
-            //remove spaces
-            line = line.trim();
-
-            //is comment spacer & ignore comments
-            if (line.isEmpty() || line.startsWith("#")) continue;
-
             if (line.contains(": ")) {
                 if (line.contains(": [")) {
-                    throw new NotImplementedYetException();
+                    assortment.append(line.split(": ")[0], new FileAssortmentSubReader(propertyLines.subList(id, this.propertyLines.size())).read(this));
                 } else {
-                    var elements = line.split(": ");
-                    assortment.append(elements[0], new ObjectPrimitive(elements[1]));
+                    this.readPrimitives(line, assortment);
                 }
             }
+            id++;
         }
         return assortment;
     }
 
+    public void readPrimitives(String line, ObjectAssortment assortment) {
+        var elements = line.split(": ");
+        assortment.append(elements[0], new ObjectPrimitive(elements[1]));
+    }
 }

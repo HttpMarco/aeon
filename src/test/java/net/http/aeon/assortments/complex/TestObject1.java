@@ -1,4 +1,4 @@
-package net.http.aeon.assortments;
+package net.http.aeon.assortments.complex;
 
 public final class TestObject1 {
 

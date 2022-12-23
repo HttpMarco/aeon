@@ -1,8 +1,9 @@
-package net.http.aeon.io;
+package net.http.aeon.io.assortment;
 
 import lombok.AllArgsConstructor;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
+import net.http.aeon.io.FileInstanceWriter;
 
 @AllArgsConstructor
 public final class FileAssortmentSubWriter {

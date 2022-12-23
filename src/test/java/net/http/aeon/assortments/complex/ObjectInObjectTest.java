@@ -1,4 +1,4 @@
-package net.http.aeon.assortments;
+package net.http.aeon.assortments.complex;
 
 import net.http.aeon.Aeon;
 import org.junit.jupiter.api.Test;

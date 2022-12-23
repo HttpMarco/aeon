@@ -21,6 +21,7 @@ import net.http.aeon.annotations.CommentedArgument;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
+import net.http.aeon.io.assortment.FileAssortmentSubWriter;
 import net.http.aeon.reflections.AeonReflections;
 import net.http.aeon.reflections.BufferedFileInstance;
 
