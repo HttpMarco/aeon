@@ -19,12 +19,13 @@ package net.http.aeon.handler.layer;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
+import net.http.aeon.reflections.AeonReflections;
 
 public final class ObjectPrimitiveLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
-        return clazz.isPrimitive();
+        return clazz.isPrimitive() || AeonReflections.isDefaultElement(clazz);
     }
 
     @Override

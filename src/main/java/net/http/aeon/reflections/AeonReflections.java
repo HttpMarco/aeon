@@ -19,10 +19,16 @@ package net.http.aeon.reflections;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public final class AeonReflections {
 
     public static final String EMTPY_STRING = "";
+    private static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
+
+    public static boolean isDefaultElement(Class<?> type) {
+        return Arrays.asList(elements).contains(type);
+    }
 
     @SneakyThrows
     public static Object get(Field field, Object object) {
