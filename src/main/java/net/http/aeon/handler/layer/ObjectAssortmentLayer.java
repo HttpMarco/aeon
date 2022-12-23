@@ -21,10 +21,15 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
+import net.http.aeon.transformer.StringValueTransformer;
+import net.http.aeon.transformer.Transformer;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
+
+    private Transformer<Object, Object> transformer = new StringValueTransformer();
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -34,7 +39,6 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-
         for (var field : value.getClass().getDeclaredFields()) {
             Aeon.instance.findPattern(field.getType()).ifPresent(pattern -> assortment.append(field.getName(), pattern.write(AeonReflections.get(field, value))));
         }
@@ -43,18 +47,18 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
 
     @Override
     public Object read(Class<Object> clazz, ObjectUnit unit) {
-        Object instance = AeonReflections.allocate(clazz);
-
-        if(unit instanceof ObjectAssortment assortment) {
-            for (Field field : clazz.getDeclaredFields()) {
-                field.setAccessible(true);
-                try {
-                    //todo add transformer for String to current object.
-                    //noinspection unchecked
-                    field.set(instance, Aeon.instance.findPattern(field.getType()).map(it -> it.read(field.getType(), assortment.get(field.getName()))).orElse(null));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+        var instance = AeonReflections.allocate(clazz);
+        if (unit instanceof ObjectAssortment assortment) {
+            for (var field : clazz.getDeclaredFields()) {
+                Aeon.instance.findPattern(field.getType()).ifPresent(pattern -> {
+                    var handle = transformer.handle(field.getType(), pattern.read(field.getType(), assortment.get(field.getName())));
+                    try {
+                        field.setAccessible(true);
+                        field.set(instance, handle);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         }
         return instance;
