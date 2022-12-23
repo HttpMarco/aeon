@@ -45,7 +45,7 @@ public final class FileInstanceReader {
             if (line.isEmpty() || line.startsWith("#")) continue;
 
             if (line.contains(": ")) {
-                if (propertyLines.contains(": [")) {
+                if (line.contains(": [")) {
                     throw new NotImplementedYetException();
                 } else {
                     var elements = line.split(": ");
