@@ -33,13 +33,11 @@ public final class Aeon {
 
         if(AeonPathFinder.isPresent(value)) {
             var unt = new FileInstanceReader(AeonPathFinder.find(value)).read();
-            System.out.println(unt.assortment().get("coins").primitives().getValue());
             //todo override
             return value;
         }
 
         var unit = instance.getReader().read(value);
-        System.out.println(unit.assortment().get("coins").primitives().getValue());
         new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
         return value;
     }
