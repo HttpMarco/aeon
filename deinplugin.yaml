@@ -1,4 +1,4 @@
-specVersion: 1
+specVersion: 1.0.4
 type: lib
 name: Aeon
 supportedGameVersions: ^1.8
@@ -9,22 +9,98 @@ authors:
   - HttpMarco
 category: misc
 description: |
-  Framework for simple de-/serialization configuration
-  
-  ---
-  
-  **Install with Gradle**
-  
-  * Open your build.gradle (groovy or kts) file
-  * Copy and paste following dependencies and repository:
-  
-       maven { url 'https://jitpack.io' }
-  
-       implementation 'com.github.HttpMarco:Aeon:TAG'
-  
-  ---
+  # Installation
+  ## Gradle Dependency
 
-introduction: Add the given dependency to your project and follow the examples.
+  ```groovy
+  repositories {
+      maven { url 'https://jitpack.io' }
+  }
+
+  dependencies {
+      implementation 'com.github.HttpMarco:Aeon:TAG'
+  }
+  ```
+  The newest version: https://jitpack.io/#HttpMarco/Aeon
+
+  ## Maven Dependency
+
+  ```xml
+
+  <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+  </repository>
+  ```
+
+  ```xml
+
+  <dependency>
+      <groupId>com.github.HttpMarco</groupId>
+      <artifactId>Aeon</artifactId>
+      <version>Tag</version>
+  </dependency>
+  ```
+
+
+  The newest version: [https://jitpack.io/#HttpMarco/Aeon](https://jitpack.io/#HttpMarco/Aeon)
+  ***
+
+  # Examples
+  (Simple property object)
+
+  ```java
+
+  @Getter
+  @Options(path = "src/test/java/net/http/aeon/", name = "config")
+  public class TestConfiguration {
+
+      private final String name;
+      private final int testValue;
+      private final TestObject testObject;
+
+      public TestConfiguration() {
+          this.name = "test";
+          this.testValue = 22;
+          this.testObject = new TestObject();
+      }
+  }
+  ```
+
+  Save, read & auto manage of configuration
+
+  ```java
+  public void handle(){
+     TestConfiguration insert=Aeon.insert(new TestConfiguration());
+     System.out.println(insert.getTestValue());
+  }
+  ```
+
+  Result: 
+  ```
+  testObject: [
+     value: 20
+  ]
+  name: test
+  testValue: 22
+  ```
+
+    Add header or spaces for configuration field 
+    `````java 
+    @CommentedArgument(comment = "Test comment", type = Emphasizing.PRIMARY)
+  ````
+
+  Aeon vs Gson
+
+  - New fields are automatically added to the file. (Best option for updates)
+  - Rename simple fields
+  - Add comments or spacers.
+  - Work faster than Gson.
+  - Easy handling of configurations
+
+introduction:
+  de: Eine (De-)Serialisierungs Library, um einfache Configs zu managen
+  en: A de-/serialization library to manage simple configurations
 tags:
   - Configuration
 icon: https://www.mediafire.com/convkey/a305/ui2azv40rbkdo5d9g.jpg
