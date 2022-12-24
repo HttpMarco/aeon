@@ -1,4 +1,4 @@
-specVersion: 1.0.4
+specVersion: 1
 type: lib
 name: Aeon
 supportedGameVersions: ^1.8
@@ -7,7 +7,7 @@ download:
   name: GitHub Repository
 authors:
   - HttpMarco
-category: misc
+category: devTool
 description: |
   # Installation
   ## Gradle Dependency
