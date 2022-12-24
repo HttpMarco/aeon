@@ -104,6 +104,7 @@ Aeon vs Gson
 - Add comments or spacers.
 - Work faster than Gson.
 - Easy handling of configurations
+- ignores upper and lower case for enumeration serialization
 
 ****
 

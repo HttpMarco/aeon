@@ -53,7 +53,8 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
 
                 Aeon.instance.findPattern(field.getType()).ifPresent(pattern -> {
                     var readableObject = pattern.read(field.getType(), filedUnit);
-                    if (filedUnit instanceof ObjectPrimitive) {
+
+                    if (filedUnit instanceof ObjectPrimitive && !field.getType().isEnum()) {
                         readableObject = transformer.handle(field.getType(), readableObject);
                     }
 
