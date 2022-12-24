@@ -54,9 +54,6 @@ public final class FileInstanceReader {
 
     public void readPrimitives(String line, ObjectAssortment assortment) {
         var elements = line.split(": ");
-
-        System.out.println(elements[1] + " : " + elements[0]);
-
         assortment.append(elements[0], new ObjectPrimitive(elements[1]));
     }
 }

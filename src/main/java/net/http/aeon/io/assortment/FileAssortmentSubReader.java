@@ -19,11 +19,7 @@ public final class FileAssortmentSubReader {
     }
 
     public ObjectAssortment read(FileInstanceReader reader) {
-
-        System.out.println("sub reader");
-
         var objectAssortment = new ObjectAssortment();
-
         for (int index = 0; index < nextLines.size(); index++) {
             this.index = index;
             var line = nextLines.get(index);
@@ -33,7 +29,6 @@ public final class FileAssortmentSubReader {
                 objectAssortment.append(line.split(": ")[0], element.read(reader));
                 index += element.getIndex();
             } else if (line.contains(": ")) {
-                System.out.println("find-property: " + line);
                 reader.readPrimitives(line, objectAssortment);
             } else if (line.contains("]")) {
                 this.index++;
