@@ -17,12 +17,41 @@
 package net.http.aeon.reflections;
 
 import lombok.SneakyThrows;
+import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public final class AeonReflections {
 
+    @SuppressWarnings("sunapi")
+    private static final Unsafe unsafe;
+
     public static final String EMTPY_STRING = "";
+    private static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
+
+    static {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static<T> T allocate(Class<T> tClass) {
+        try {
+            return (T) unsafe.allocateInstance(tClass);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean isDefaultElement(Class<?> type) {
+        return Arrays.asList(elements).contains(type);
+    }
 
     @SneakyThrows
     public static Object get(Field field, Object object) {

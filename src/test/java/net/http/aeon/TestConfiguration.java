@@ -1,17 +1,19 @@
 package net.http.aeon;
 
 import lombok.Getter;
-import net.http.aeon.annotations.CommentedArgument;
+import net.http.aeon.annotations.Options;
 
 @Getter
-@CommentedArgument(comment = {"Das ist eine Beschreibung der Klasse", "a"})
-public final class TestConfiguration {
+@Options(path = "src/test/java/net/http/aeon/", name = "config")
+public class TestConfiguration {
 
-    private final int coins;
-    private final boolean state = false;
+    private final String name;
+    private final int testValue;
+    private final TestObject testObject;
 
-    public TestConfiguration(int coins) {
-        this.coins = coins;
+    public TestConfiguration() {
+        this.name = "test";
+        this.testValue = 22;
+        this.testObject = new TestObject();
     }
-
 }

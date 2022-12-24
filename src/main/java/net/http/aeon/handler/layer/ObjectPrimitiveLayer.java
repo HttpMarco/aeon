@@ -18,18 +18,28 @@ package net.http.aeon.handler.layer;
 
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
+import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
+import net.http.aeon.reflections.AeonReflections;
 
-public final class ObjectPrimitiveLayer implements ObjectPattern {
+public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
 
     @Override
     public boolean isElement(Class<?> clazz) {
-        return clazz.isPrimitive();
+        return clazz.isPrimitive() || AeonReflections.isDefaultElement(clazz);
     }
 
     @Override
     public ObjectUnit write(Object value) {
         return new ObjectPrimitive(value);
+    }
+
+    @Override
+    public Object read(Class<Object> clazz, ObjectUnit unit) {
+        if(unit instanceof ObjectPrimitive primitive) {
+            return primitive.getValue();
+        }
+        throw new UnsupportedWayException("This is not a correct primitive type.");
     }
 
 }

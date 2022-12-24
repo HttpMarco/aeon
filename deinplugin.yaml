@@ -1,0 +1,19 @@
+specVersion: 1.0.4
+type: lib
+name: Aeon
+download:
+  url: https://github.com/HttpMarco/Aeon
+  name: GitHub Repository
+supportedPlatforms:
+  - JVM Platforms
+authors:
+  - HttpMarco
+category: misc
+tags:
+  - Configuration
+icon: https://www.mediafire.com/convkey/a305/ui2azv40rbkdo5d9g.jpg
+videoSources:
+  - https://www.youtube.com/watch?v=9laUJrsO9jw
+introduction: Framework for simple de-/serialization configuration
+description: |
+  See ReadME.md

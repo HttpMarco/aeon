@@ -23,6 +23,7 @@ import net.http.aeon.io.FileInstanceReader;
 import net.http.aeon.io.FileInstanceWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
+@SuppressWarnings("ALL")
 public final class Aeon {
 
     public static final String FILE_EXTENSION = ".ae";
@@ -32,14 +33,12 @@ public final class Aeon {
 
 
         if(AeonPathFinder.isPresent(value)) {
-            var unt = new FileInstanceReader(AeonPathFinder.find(value)).read();
-            System.out.println(unt.assortment().get("coins").primitives().getValue());
-            //todo override
-            return value;
+            var unit = new FileInstanceReader(AeonPathFinder.find(value)).read();
+            //todo write new properties from file
+            return (T) instance.getWriter().as(unit, value.getClass());
         }
 
         var unit = instance.getReader().read(value);
-        System.out.println(unit.assortment().get("coins").primitives().getValue());
         new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
         return value;
     }

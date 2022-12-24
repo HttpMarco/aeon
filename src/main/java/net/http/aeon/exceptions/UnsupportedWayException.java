@@ -22,4 +22,7 @@ public final class UnsupportedWayException extends RuntimeException {
         super();
     }
 
+    public UnsupportedWayException(String message) {
+        super(message);
+    }
 }

@@ -20,20 +20,27 @@ import lombok.Getter;
 import net.http.aeon.handler.layer.ObjectAssortmentLayer;
 import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
 import net.http.aeon.handler.reader.ObjectPatternReader;
+import net.http.aeon.handler.reader.ObjectPatternWriter;
+
 import java.util.Arrays;
 import java.util.Optional;
 
+@SuppressWarnings("rawtypes")
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
     @Getter
     private final ObjectPatternReader reader;
+    @Getter
+    private final ObjectPatternWriter writer;
 
     public ObjectHandler() {
         this.reader = new ObjectPatternReader();
+        this.writer = new ObjectPatternWriter();
     }
 
+    @SuppressWarnings("unchecked")
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
     }

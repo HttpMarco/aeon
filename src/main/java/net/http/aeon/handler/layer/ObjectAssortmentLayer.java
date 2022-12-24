@@ -18,11 +18,16 @@ package net.http.aeon.handler.layer;
 
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectAssortment;
+import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
+import net.http.aeon.transformer.StringValueTransformer;
+import net.http.aeon.transformer.Transformer;
 
-public final class ObjectAssortmentLayer implements ObjectPattern {
+public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
+
+    private Transformer<Object, Object> transformer = new StringValueTransformer();
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -32,11 +37,35 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-
         for (var field : value.getClass().getDeclaredFields()) {
             Aeon.instance.findPattern(field.getType()).ifPresent(pattern -> assortment.append(field.getName(), pattern.write(AeonReflections.get(field, value))));
         }
-
         return assortment;
+    }
+
+    @Override
+    public Object read(Class<Object> clazz, ObjectUnit unit) {
+        var instance = AeonReflections.allocate(clazz);
+        if (unit instanceof ObjectAssortment assortment) {
+            for (var field : clazz.getDeclaredFields()) {
+
+                var filedUnit = assortment.get(field.getName());
+
+                Aeon.instance.findPattern(field.getType()).ifPresent(pattern -> {
+                    var readableObject = pattern.read(field.getType(), filedUnit);
+                    if (filedUnit instanceof ObjectPrimitive) {
+                        readableObject = transformer.handle(field.getType(), readableObject);
+                    }
+
+                    try {
+                        field.setAccessible(true);
+                        field.set(instance, readableObject);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
+        return instance;
     }
 }
