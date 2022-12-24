@@ -1,16 +1,28 @@
 specVersion: 1
 type: lib
 name: Aeon
+supportedGameVersions: ^1.8
 download:
   url: https://github.com/HttpMarco/Aeon
   name: GitHub Repository
-supportedPlatforms:
-  - JVM Platforms
 authors:
   - HttpMarco
 category: misc
 description: |
   Framework for simple de-/serialization configuration
+  
+  ---
+  
+  **Install with Gradle**
+  
+  * Open your build.gradle (groovy or kts) file
+  * Copy and paste following dependencies and repository:
+  
+       maven { url 'https://jitpack.io' }
+  
+       implementation 'com.github.HttpMarco:Aeon:TAG'
+  
+  ---
 
 introduction: Add the given dependency to your project and follow the examples.
 tags:
