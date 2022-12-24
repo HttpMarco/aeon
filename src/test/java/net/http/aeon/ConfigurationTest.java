@@ -8,8 +8,7 @@ public class ConfigurationTest {
     public void handle() {
 
         TestConfiguration insert = Aeon.insert(new TestConfiguration());
-        System.out.println(insert.getTestValue());
-
+        System.out.println(insert.getTestEnum().name());
 
     }
 

@@ -104,6 +104,7 @@ Aeon vs Gson
 - Add comments or spacers.
 - Work faster than Gson.
 - Easy handling of configurations
+- ignores upper and lower case for enumeration serialization
 
 ****
 
@@ -111,7 +112,8 @@ Todo 'Release':
 
 - [ ] Handle of null parameters
 - [ ] rename for configuration files
-- [ ] Support Enumerations, Array, Map, Lists, Pair
+- [x] Support Enumerations
+- [ ] Support Array, Map, Lists, Pair
 - [ ] Add comments for fields
 - [ ] remove duplicated renamed fields
 - [ ] factory for default values
