@@ -19,18 +19,24 @@ public final class FileAssortmentSubReader {
     }
 
     public ObjectAssortment read(FileInstanceReader reader) {
+
+        System.out.println("sub reader");
+
         var objectAssortment = new ObjectAssortment();
 
         for (int index = 0; index < nextLines.size(); index++) {
             this.index = index;
             var line = nextLines.get(index);
-            if (line.contains(": ")) {
-                reader.readPrimitives(line, objectAssortment);
-            } else if (line.contains(": [")) {
+            if (line.contains(": [")) {
+                this.index++;
                 var element = new FileAssortmentSubReader(nextLines.subList(index, nextLines.size()));
                 objectAssortment.append(line.split(": ")[0], element.read(reader));
                 index += element.getIndex();
+            } else if (line.contains(": ")) {
+                System.out.println("find-property: " + line);
+                reader.readPrimitives(line, objectAssortment);
             } else if (line.contains("]")) {
+                this.index++;
                 break;
             } else throw new AeonFormattingException("Reader found an unknown formatting: {aeon: " + line + "}");
         }

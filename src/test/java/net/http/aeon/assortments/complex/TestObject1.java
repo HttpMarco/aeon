@@ -5,7 +5,7 @@ import lombok.Getter;
 public final class TestObject1 {
 
     @Getter
-    private final String element1 = "Test";
-    private final short element2 = 2;
+    private final String element1 ="Test";
+    private final Short element2 = 2;
 
 }

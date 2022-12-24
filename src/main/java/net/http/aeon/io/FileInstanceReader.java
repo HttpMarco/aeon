@@ -37,22 +37,26 @@ public final class FileInstanceReader {
         var assortment = new ObjectAssortment();
         this.propertyLines = this.propertyLines.stream().map(String::trim).filter(it -> !(it.isEmpty() || it.startsWith("#"))).toList();
 
-        var id = 0;
-        for (var line : propertyLines) {
+        for (int index = 0; index < propertyLines.size(); index++) {
+            var line = this.propertyLines.get(index);
             if (line.contains(": ")) {
                 if (line.contains(": [")) {
-                    assortment.append(line.split(": ")[0], new FileAssortmentSubReader(propertyLines.subList(id, this.propertyLines.size())).read(this));
+                    FileAssortmentSubReader reader = new FileAssortmentSubReader(propertyLines.subList(index + 1, this.propertyLines.size()));
+                    assortment.append(line.split(": ")[0], reader.read(this));
+                    index += reader.getIndex();
                 } else {
                     this.readPrimitives(line, assortment);
                 }
             }
-            id++;
         }
         return assortment;
     }
 
     public void readPrimitives(String line, ObjectAssortment assortment) {
         var elements = line.split(": ");
+
+        System.out.println(elements[1] + " : " + elements[0]);
+
         assortment.append(elements[0], new ObjectPrimitive(elements[1]));
     }
 }

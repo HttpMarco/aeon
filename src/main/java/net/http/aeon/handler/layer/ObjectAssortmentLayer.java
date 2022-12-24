@@ -25,9 +25,6 @@ import net.http.aeon.reflections.AeonReflections;
 import net.http.aeon.transformer.StringValueTransformer;
 import net.http.aeon.transformer.Transformer;
 
-import java.lang.reflect.Field;
-import java.util.Optional;
-
 public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
 
     private Transformer<Object, Object> transformer = new StringValueTransformer();
@@ -64,7 +61,7 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
                         field.setAccessible(true);
                         field.set(instance, readableObject);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                 });
             }
