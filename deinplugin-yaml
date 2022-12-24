@@ -9,6 +9,8 @@ supportedPlatforms:
 authors:
   - HttpMarco
 category: misc
+supportedGameVersions: ^1.8
+introduction: Add the given dependency to your project and follow the examples.
 tags:
   - Configuration
 icon: https://www.mediafire.com/convkey/a305/ui2azv40rbkdo5d9g.jpg
