@@ -16,13 +16,13 @@ public final class ObjectEnumerationLayer<T extends Enum> implements ObjectPatte
 
     @Override
     public ObjectUnit write(Object o) {
-        if(!(o instanceof Enum<?> object)) throw new UnsupportedWayException("The given object is not an enumeration");
+        if (!(o instanceof Enum<?> object)) throw new UnsupportedWayException("The given object is not an enumeration");
         return new ObjectPrimitive(object.name());
     }
 
     @Override
     public T read(Class<T> clazz, ObjectUnit unit) {
-        if(unit instanceof ObjectPrimitive primitive) {
+        if (unit instanceof ObjectPrimitive primitive) {
             return (T) Enum.valueOf(clazz, primitive.getValue().toString().toUpperCase(Locale.ROOT));
         }
         throw new UnsupportedWayException("The given unit is not an enumeration");

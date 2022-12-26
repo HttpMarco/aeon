@@ -20,7 +20,7 @@ import lombok.NonNull;
 import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.handler.ObjectHandler;
 import net.http.aeon.io.FileInstanceReader;
-import net.http.aeon.io.FileInstanceWriter;
+import net.http.aeon.io.RecordFileWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
 @SuppressWarnings("ALL")
@@ -30,16 +30,12 @@ public final class Aeon {
     public static final ObjectHandler instance = new ObjectHandler();
 
     public static <T> T insert(@NonNull T value) {
-
-
         if(AeonPathFinder.isPresent(value)) {
             var unit = new FileInstanceReader(AeonPathFinder.find(value)).read();
             //todo write new properties from file
             return (T) instance.getWriter().as(unit, value.getClass());
         }
-
-        var unit = instance.getReader().read(value);
-        new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
+        new RecordFileWriter(value, instance.getReader().read(value));
         return value;
     }
 
