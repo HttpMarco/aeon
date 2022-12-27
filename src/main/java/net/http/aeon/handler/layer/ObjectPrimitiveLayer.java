@@ -36,10 +36,15 @@ public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
 
     @Override
     public Object read(Class<Object> clazz, ObjectUnit unit) {
-        if(unit instanceof ObjectPrimitive primitive) {
+
+        if (unit == null) {
+            //todo default element handler
+            return "null";
+        }
+
+        if (unit instanceof ObjectPrimitive primitive) {
             return primitive.getValue();
         }
         throw new UnsupportedWayException("This is not a correct primitive type.");
     }
-
 }

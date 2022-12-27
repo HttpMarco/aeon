@@ -8,5 +8,6 @@ import net.http.aeon.annotations.Options;
 public class TestConfiguration {
 
     private TestEnum testEnum = TestEnum.A;
+    private String name = "abc";
 
 }

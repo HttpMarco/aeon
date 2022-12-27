@@ -25,5 +25,4 @@ public abstract class DistanceElement {
         runnable.run();;
         this.reduce();
     }
-
 }
