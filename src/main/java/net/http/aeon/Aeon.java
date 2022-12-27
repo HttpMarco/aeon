@@ -32,12 +32,12 @@ public final class Aeon {
 
     public static <T> T insert(@NonNull T value) {
         if(AeonPathFinder.isPresent(value)) {
-            T element = (T) instance.getWriter().as(new RecordFileReader(value).getObjectAssortment(), value.getClass());
+            T element = (T) instance.as(new RecordFileReader(value).getObjectAssortment(), value.getClass());
             //overwrite existing property
-            new RecordFileWriter(element, instance.getReader().read(element));
+            new RecordFileWriter(element, instance.read(element));
             return element;
         }
-        new RecordFileWriter(value, instance.getReader().read(value));
+        new RecordFileWriter(value, instance.read(value));
         return value;
     }
 
