@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.http.aeon.handler.types;
+package net.http.aeon.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

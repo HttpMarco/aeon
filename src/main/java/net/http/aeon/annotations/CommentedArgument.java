@@ -16,7 +16,7 @@
 
 package net.http.aeon.annotations;
 
-import net.http.aeon.handler.types.Emphasizing;
+import net.http.aeon.handler.Emphasizing;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
