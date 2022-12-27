@@ -7,8 +7,8 @@ import net.http.aeon.annotations.Options;
 @Options(path = "src/test/java/net/http/aeon/", name = "config")
 public class TestConfiguration {
 
-    private TestEnum testEnum = TestEnum.A;
-    private String name = "abc";
-    private int coins = 20;
+
+    private String name = "test";
+    private TestObject test = new TestObject();
 
 }

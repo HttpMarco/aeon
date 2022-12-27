@@ -21,12 +21,9 @@ import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
-import net.http.aeon.transformer.StringValueTransformer;
-import net.http.aeon.transformer.Transformer;
+import java.beans.PropertyEditorManager;
 
 public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
-
-    private final Transformer<Object, Object> transformer = new StringValueTransformer();
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -41,7 +38,9 @@ public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
     @Override
     public Object read(Class<Object> clazz, ObjectUnit unit) {
         if (unit instanceof ObjectPrimitive primitive) {
-            return transformer.handle(clazz, primitive.getValue());
+            var editor = PropertyEditorManager.findEditor(clazz);
+            editor.setAsText(primitive.getValue().toString());
+            return editor.getValue();
         }
         throw new UnsupportedWayException("This is not a correct primitive type.");
     }
