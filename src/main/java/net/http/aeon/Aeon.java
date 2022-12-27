@@ -27,6 +27,7 @@ import net.http.aeon.reflections.AeonPathFinder;
 public final class Aeon {
 
     public static final String FILE_EXTENSION = ".ae";
+
     public static final ObjectHandler instance = new ObjectHandler();
 
     public static <T> T insert(@NonNull T value) {

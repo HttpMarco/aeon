@@ -19,6 +19,7 @@ package net.http.aeon.reflections;
 import lombok.SneakyThrows;
 import sun.misc.Unsafe;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
@@ -48,6 +49,15 @@ public final class AeonReflections {
             return (T) unsafe.allocateInstance(tClass);
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void modify(Field field, Object object, Object value) {
+        try {
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 

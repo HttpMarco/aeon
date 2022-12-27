@@ -4,8 +4,6 @@ import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
-
-import java.io.IOException;
 import java.util.Locale;
 
 public final class ObjectEnumerationLayer<T extends Enum> implements ObjectPattern<T> {
