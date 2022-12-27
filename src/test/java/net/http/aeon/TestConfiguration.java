@@ -9,5 +9,6 @@ public class TestConfiguration {
 
     private TestEnum testEnum = TestEnum.A;
     private String name = "abc";
+    private int coins = 20;
 
 }

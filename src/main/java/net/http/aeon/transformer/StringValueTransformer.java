@@ -1,15 +1,11 @@
 package net.http.aeon.transformer;
 
-import net.http.aeon.exceptions.UnsupportedWayException;
-
 public final class StringValueTransformer implements Transformer<Object, Object> {
 
     @Override
     public Object handle(Class<?> type, Object transmitted) {
-        if(type.equals(String.class)) return transmitted;
         var tmp = String.valueOf(transmitted);
 
-        //todo: find a better way <3
         if (type.equals(Integer.class) || int.class.equals(type)) {
             return Integer.parseInt(tmp);
         }
@@ -31,6 +27,7 @@ public final class StringValueTransformer implements Transformer<Object, Object>
         if (type.equals(Float.class) || float.class.equals(type)) {
             return Float.parseFloat(tmp);
         }
-        throw new UnsupportedWayException();
+        return transmitted;
     }
+
 }

@@ -40,12 +40,6 @@ public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
 
     @Override
     public Object read(Class<Object> clazz, ObjectUnit unit) {
-
-        if (unit == null) {
-            //todo default element handler
-            return "null";
-        }
-
         if (unit instanceof ObjectPrimitive primitive) {
             return transformer.handle(clazz, primitive.getValue());
         }

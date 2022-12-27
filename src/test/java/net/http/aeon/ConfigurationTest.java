@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 
 public class ConfigurationTest {
 
+
+    private String name = "test";
+
     @Test
     public void handle() {
 
@@ -11,5 +14,4 @@ public class ConfigurationTest {
         System.out.println(insert.getTestEnum().name());
 
     }
-
 }
