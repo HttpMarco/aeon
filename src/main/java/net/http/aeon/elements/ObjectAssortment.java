@@ -33,5 +33,4 @@ public final class ObjectAssortment extends ObjectUnit {
     public ObjectUnit get(String key) {
         return this.units.get(key);
     }
-
 }

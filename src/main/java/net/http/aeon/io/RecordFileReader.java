@@ -43,10 +43,7 @@ public final class RecordFileReader extends DistanceElement {
         for (var index = 0; index < lines.size(); index++) {
             index += readElement(lines.subList(0, lines.size()), instance);
             id = index;
-        }
-
-        if (lines.get(id).contains("]")) {
-            System.out.println("polo");
+            if(lines.get(id).contains("]")) break;
         }
         assortment.append(key, instance);
         return ++id;
