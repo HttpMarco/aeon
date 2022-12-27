@@ -23,6 +23,7 @@ import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.layer.ObjectAssortmentLayer;
 import net.http.aeon.handler.layer.ObjectEnumerationLayer;
 import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
+import net.http.aeon.handler.layer.ObjectSeriesLayer;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -31,7 +32,7 @@ import java.util.Optional;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public final class ObjectHandler {
 
-    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
+    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
