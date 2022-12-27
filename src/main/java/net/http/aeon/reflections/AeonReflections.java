@@ -25,13 +25,13 @@ import java.util.Arrays;
 public final class AeonReflections {
 
     @SuppressWarnings("sunapi")
-    private static final Unsafe unsafe;
+    public static final Unsafe unsafe;
     public static final String EMTPY_STRING = "";
     public static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
 
     static {
         try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            var field = Unsafe.class.getDeclaredField("theUnsafe");
             field.setAccessible(true);
             unsafe = (Unsafe) field.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -66,5 +66,4 @@ public final class AeonReflections {
         field.setAccessible(true);
         return field.get(object);
     }
-
 }

@@ -25,10 +25,8 @@ public final class ObjectEnumerationLayer<T extends Enum> implements ObjectPatte
             try {
                 return (T) Enum.valueOf(clazz, primitive.getValue().toString().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException exception) {
-
                 var constants = clazz.getEnumConstants();
                 var notPresentConstant = "Enum constant is not present: " + primitive.getValue().toString().toUpperCase(Locale.ROOT);
-
                 if (constants.length == 0) {
                     throw new UnsupportedWayException(notPresentConstant + ", no default value is present.");
                 }

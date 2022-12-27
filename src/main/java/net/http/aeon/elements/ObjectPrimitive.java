@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class ObjectPrimitive extends ObjectUnit {
+public final class ObjectPrimitive extends ObjectUnit {
 
     @Getter
     private Object value;

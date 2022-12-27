@@ -21,6 +21,7 @@ import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
+
 import java.beans.PropertyEditorManager;
 
 public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
@@ -37,11 +38,11 @@ public final class ObjectPrimitiveLayer implements ObjectPattern<Object> {
 
     @Override
     public Object read(Class<Object> clazz, ObjectUnit unit) {
-        if (unit instanceof ObjectPrimitive primitive) {
-            var editor = PropertyEditorManager.findEditor(clazz);
-            editor.setAsText(primitive.getValue().toString());
-            return editor.getValue();
+        if (!(unit instanceof ObjectPrimitive primitive)) {
+            throw new UnsupportedWayException("This is not a correct primitive type.");
         }
-        throw new UnsupportedWayException("This is not a correct primitive type.");
+        var editor = PropertyEditorManager.findEditor(clazz);
+        editor.setAsText(primitive.getValue().toString());
+        return editor.getValue();
     }
 }
