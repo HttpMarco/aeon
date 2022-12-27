@@ -19,6 +19,7 @@ package net.http.aeon.reflections;
 import lombok.SneakyThrows;
 import sun.misc.Unsafe;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
@@ -28,7 +29,9 @@ public final class AeonReflections {
     private static final Unsafe unsafe;
 
     public static final String EMTPY_STRING = "";
-    private static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
+
+    public static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
+    public static final Class<?>[] primitives = new Class<?>[]{int.class, boolean.class, short.class, float.class, byte.class, double.class, long.class};
 
     static {
         try {
@@ -46,6 +49,15 @@ public final class AeonReflections {
             return (T) unsafe.allocateInstance(tClass);
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void modify(Field field, Object object, Object value) {
+        try {
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 

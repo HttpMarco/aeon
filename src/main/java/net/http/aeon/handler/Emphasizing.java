@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package net.http.aeon.handler.reader;
+package net.http.aeon.handler;
 
-import net.http.aeon.Aeon;
-import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
-import net.http.aeon.handler.layer.ObjectAssortmentLayer;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public final class ObjectPatternReader {
+@Getter
+@AllArgsConstructor
+public enum Emphasizing {
 
-    public ObjectUnit read(Object object) {
-        var instancePattern = Aeon.instance.findPattern(object.getClass());
+    NONE(false, false),
+    TOP(true, false),
+    BOTTOM(false, true),
+    PRIMARY(true, true);
 
-        if (instancePattern.isEmpty() || !(instancePattern.get() instanceof ObjectAssortmentLayer)) {
-            throw new UnsupportedWayException();
-        }
+    final boolean spacerBefore;
+    final boolean spacerAfter;
 
-        return instancePattern.get().write(object);
-    }
 }

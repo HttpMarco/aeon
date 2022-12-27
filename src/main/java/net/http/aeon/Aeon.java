@@ -19,27 +19,25 @@ package net.http.aeon;
 import lombok.NonNull;
 import net.http.aeon.exceptions.NotImplementedYetException;
 import net.http.aeon.handler.ObjectHandler;
-import net.http.aeon.io.FileInstanceReader;
-import net.http.aeon.io.FileInstanceWriter;
+import net.http.aeon.io.RecordFileReader;
+import net.http.aeon.io.RecordFileWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
 @SuppressWarnings("ALL")
 public final class Aeon {
 
     public static final String FILE_EXTENSION = ".ae";
+
     public static final ObjectHandler instance = new ObjectHandler();
 
     public static <T> T insert(@NonNull T value) {
-
-
         if(AeonPathFinder.isPresent(value)) {
-            var unit = new FileInstanceReader(AeonPathFinder.find(value)).read();
-            //todo write new properties from file
-            return (T) instance.getWriter().as(unit, value.getClass());
+            T element = (T) instance.as(new RecordFileReader(value).getObjectAssortment(), value.getClass());
+            //overwrite existing property
+            new RecordFileWriter(element, instance.read(element));
+            return element;
         }
-
-        var unit = instance.getReader().read(value);
-        new FileInstanceWriter(value, AeonPathFinder.find(value), unit);
+        new RecordFileWriter(value, instance.read(value));
         return value;
     }
 
