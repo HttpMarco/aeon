@@ -21,6 +21,7 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
+
 import java.util.Arrays;
 
 public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
@@ -41,7 +42,13 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
     public Object read(Class<Object> clazz, ObjectUnit unit) {
         var object = AeonReflections.allocate(clazz);
         if (unit instanceof ObjectAssortment assortment) {
-            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> AeonReflections.modify(it, object, pattern.read(it.getType(), assortment.get(it.getName())))));
+            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
+                if (assortment.get(it.getName()) != null) {
+                    AeonReflections.modify(it, object, pattern.read(it.getType(), assortment.get(it.getName())));
+                } else {
+                    //todo add default handler
+                }
+            }));
         }
         return object;
     }
