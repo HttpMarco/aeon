@@ -41,11 +41,9 @@ public final class RecordFileReader extends DistanceElement {
         for (var key : assortment.getUnits().keySet()) {
 
         }
-
         if (lines.get(id).contains("]")) {
             System.out.println("polo");
         }
-
         return ++id;
     }
 }

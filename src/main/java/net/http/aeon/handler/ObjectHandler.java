@@ -23,33 +23,31 @@ import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.layer.ObjectAssortmentLayer;
 import net.http.aeon.handler.layer.ObjectEnumerationLayer;
 import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
+
 import java.util.Arrays;
 import java.util.Optional;
 
-@SuppressWarnings("rawtypes")
 @Getter
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
-    @SuppressWarnings("unchecked")
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
     }
 
     public ObjectUnit read(Object object) {
-        var instancePattern = Aeon.instance.findPattern(object.getClass());
-        if (instancePattern.isEmpty() || !(instancePattern.get() instanceof ObjectAssortmentLayer)) {
-            throw new UnsupportedWayException();
-        }
-        return instancePattern.get().write(object);
+        return caughtUnsupportedException(object.getClass()).write(object);
     }
 
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
-        var instancePattern = Aeon.instance.findPattern(clazz);
-        if (instancePattern.isEmpty() || !(instancePattern.get() instanceof ObjectAssortmentLayer)) {
-            throw new UnsupportedWayException();
-        }
-        return (T) instancePattern.get().read(clazz, objectUnit);
+        return (T) caughtUnsupportedException(clazz).read(clazz, objectUnit);
+    }
+
+    private ObjectPattern caughtUnsupportedException(Class<?> clazz) {
+        var pattern = Aeon.instance.findPattern(clazz);
+        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedWayException();
+        return pattern.get();
     }
 }
