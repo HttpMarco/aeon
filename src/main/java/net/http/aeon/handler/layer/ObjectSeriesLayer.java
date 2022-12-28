@@ -45,17 +45,35 @@ public final class ObjectSeriesLayer implements ObjectPattern {
         if (clazz.equals(String[].class)) {
             return Arrays.stream(objects).map(String::valueOf).toArray(String[]::new);
         }
-
         if (clazz.equals(Integer[].class)) {
             return Arrays.stream(objects).map(o -> Integer.parseInt(String.valueOf(o))).toArray(Integer[]::new);
         }
 
+
+        //primitives
         if (clazz.equals(int[].class)) {
             return Arrays.stream(objects).mapToInt(object -> (int) object).toArray();
+        }
+        if (clazz.equals(boolean[].class)) {
+            return Arrays.stream(objects).map(object -> (boolean) object).toArray();
+        }
+        if (clazz.equals(short[].class)) {
+            return Arrays.stream(objects).map(object -> (short) object).toArray();
+        }
+        if (clazz.equals(byte[].class)) {
+            return Arrays.stream(objects).map(object -> (byte) object).toArray();
+        }
+        if (clazz.equals(float[].class)) {
+            return Arrays.stream(objects).map(object -> (float) object).toArray();
+        }
+        if (clazz.equals(double[].class)) {
+            return Arrays.stream(objects).map(object -> (double) object).toArray();
+        }
+        if (clazz.equals(long[].class)) {
+            return Arrays.stream(objects).map(object -> (long) object).toArray();
         }
 
 
         return objects;
     }
-
 }
