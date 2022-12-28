@@ -7,6 +7,7 @@ import net.http.aeon.annotations.Options;
 @Options(path = "src/test/java/net/http/aeon/", name = "config")
 public class TestConfiguration {
 
-    private String[] te = new String[]{"ab", "asd"};
+    private int[] te = new int[]{2, 3};
+    private String name = "ad";
 
 }

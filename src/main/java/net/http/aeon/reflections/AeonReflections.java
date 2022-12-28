@@ -66,4 +66,125 @@ public final class AeonReflections {
         field.setAccessible(true);
         return field.get(object);
     }
+
+
+    public static Object convert(Object object) {
+        if (object != null && object.getClass().isArray()) {
+            if (object instanceof int[]) {
+                int[] array = (int[]) object;
+                Integer[] objects = new Integer[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+            if (object instanceof boolean[]) {
+                boolean[] array = (boolean[]) object;
+                Boolean[] objects = new Boolean[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (object instanceof short[]) {
+                short[] array = (short[]) object;
+                Short[] objects = new Short[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (object instanceof float[]) {
+                float[] array = (float[]) object;
+                Float[] objects = new Float[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (object instanceof double[]) {
+                double[] array = (double[]) object;
+                Double[] objects = new Double[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (object instanceof long[]) {
+                long[] array = (long[]) object;
+                Long[] objects = new Long[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+        }
+        return object;
+    }
+
+    public static Object convertFieldElement(Class<?> clazz, Object object) {
+        if (object == null) return null;
+        if (object.getClass().isArray()) {
+            if (clazz.equals(int[].class)) {
+                Integer[] array = (Integer[]) object;
+                int[] objects = new int[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (clazz.equals(boolean[].class)) {
+                Boolean[] array = (Boolean[]) object;
+                boolean[] objects = new boolean[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (clazz.equals(short[].class)) {
+                Short[] array = (Short[]) object;
+                short[] objects = new short[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (clazz.equals(float[].class)) {
+                Float[] array = (Float[]) object;
+                float[] objects = new float[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (clazz.equals(double[].class)) {
+                Double[] array = (Double[]) object;
+                double[] objects = new double[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+
+            if (clazz.equals(long[].class)) {
+                Long[] array = (Long[]) object;
+                long[] objects = new long[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    objects[i] = array[i];
+                }
+                return objects;
+            }
+        }
+        return object;
+    }
+
+
 }
