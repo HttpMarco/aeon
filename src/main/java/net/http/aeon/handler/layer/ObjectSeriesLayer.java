@@ -48,6 +48,24 @@ public final class ObjectSeriesLayer implements ObjectPattern {
         if (clazz.equals(Integer[].class)) {
             return Arrays.stream(objects).map(o -> Integer.parseInt(String.valueOf(o))).toArray(Integer[]::new);
         }
+        if (clazz.equals(Boolean[].class)) {
+            return Arrays.stream(objects).map(o -> Boolean.parseBoolean(String.valueOf(o))).toArray(Boolean[]::new);
+        }
+        if (clazz.equals(Short[].class)) {
+            return Arrays.stream(objects).map(o -> Short.parseShort(String.valueOf(o))).toArray(Short[]::new);
+        }
+        if (clazz.equals(Byte[].class)) {
+            return Arrays.stream(objects).map(o -> Byte.parseByte(String.valueOf(o))).toArray(Byte[]::new);
+        }
+        if (clazz.equals(Float[].class)) {
+            return Arrays.stream(objects).map(o -> Float.parseFloat(String.valueOf(o))).toArray(Float[]::new);
+        }
+        if (clazz.equals(Double[].class)) {
+            return Arrays.stream(objects).map(o -> Double.parseDouble(String.valueOf(o))).toArray(Double[]::new);
+        }
+        if (clazz.equals(Long[].class)) {
+            return Arrays.stream(objects).map(o -> Long.parseLong(String.valueOf(o))).toArray(Long[]::new);
+        }
 
 
         //primitives
@@ -73,7 +91,7 @@ public final class ObjectSeriesLayer implements ObjectPattern {
             return Arrays.stream(objects).map(object -> (long) object).toArray();
         }
 
-
+        //default value
         return objects;
     }
 }
