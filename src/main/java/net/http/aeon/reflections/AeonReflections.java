@@ -17,31 +17,35 @@
 package net.http.aeon.reflections;
 
 import lombok.SneakyThrows;
+import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Objects;
 
 public final class AeonReflections {
 
+    @SuppressWarnings("sunapi")
+    public static final Unsafe unsafe;
     public static final String EMTPY_STRING = "";
     public static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
 
     static {
-        Runtime.getRuntime().load(externalFile());
-    }
-
-    private static String externalFile() {
-        return Objects.requireNonNull(AeonReflections
-                .class
-                .getClassLoader()
-                .getResource("external.dll")
-        ).getPath().replace("%20", " ");
+        try {
+            var field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")
     public static<T> T allocate(Class<T> tClass) {
-        return (T) allocate0(tClass);
+        try {
+            return (T) unsafe.allocateInstance(tClass);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static native Object allocate0(Class<?> type);
