@@ -1,1 +1,8 @@
-
+testObjects: {
+   [
+      value: 20
+   ]
+   [
+      value: 20
+   ]
+}
