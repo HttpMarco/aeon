@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022 Aeon contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.http.aeon.io;
 
 import net.http.aeon.elements.ObjectAssortment;
@@ -17,7 +33,6 @@ public final class RecordFileWriter extends DistanceElement {
 
     public RecordFileWriter(Object value, ObjectUnit unit) {
         writeElement(null, unit, false);
-
         try (var reader = Files.newBufferedWriter(AeonPathFinder.find(value))) {
             reader.write(this.builder.toString());
         } catch (IOException exception) {
@@ -38,18 +53,20 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeAssortment(String key, ObjectAssortment assortment, boolean seriesElement) {
-        this.builder.append(space()).append(key).append(": [").append(nextLine());
-        this.blockSet(() -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, seriesElement)));
-        this.builder.append(space()).append("]").append(nextLine());
+        this.writeBlockElement(key, () -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, seriesElement)), '[', ']');
     }
 
     private void writeSeries(String key, ObjectSeries series) {
-        this.builder.append(space()).append(key).append(": {").append(nextLine());
-        this.blockSet(() -> series.series().forEach(it -> writeElement(null, it, true)));
-        this.builder.append(space()).append("}").append(nextLine());
+        this.writeBlockElement(key, () -> series.series().forEach(it -> writeElement(null, it, true)), '{', '}');
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
         this.builder.append(space()).append(seriesElement ? "" : key + ": ").append(primitive.getValue()).append(seriesElement ? "," + nextLine() : nextLine());
+    }
+
+    private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol) {
+        this.builder.append(space()).append(key).append(": ").append(openSymbol).append(nextLine());
+        this.blockSet(handle);
+        this.builder.append(space()).append(closeSymbol).append(nextLine());
     }
 }
