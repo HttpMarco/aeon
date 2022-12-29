@@ -45,9 +45,8 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
             Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
                 if (assortment.get(it.getName()) != null) {
                     AeonReflections.modify(it, object, pattern.read(it.getType(), assortment.get(it.getName())));
-                } else {
-                    //todo add default handler
                 }
+                //TODO: add default handler
             }));
         }
         return object;

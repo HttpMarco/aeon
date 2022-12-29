@@ -29,7 +29,7 @@ import java.nio.file.Files;
 
 public final class RecordFileWriter extends DistanceElement {
 
-    private StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     public RecordFileWriter(Object value, ObjectUnit unit) {
         writeElement(null, unit, false);
@@ -68,12 +68,12 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(nextLine());
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(NEXT_LINE);
     }
 
     private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(openSymbol).append(nextLine());
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(openSymbol).append(NEXT_LINE);
         this.blockSet(handle);
-        this.builder.append(space()).append(closeSymbol).append(nextLine());
+        this.builder.append(space()).append(closeSymbol).append(NEXT_LINE);
     }
 }

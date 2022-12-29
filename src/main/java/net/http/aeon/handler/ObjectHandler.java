@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Getter
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
@@ -39,14 +39,14 @@ public final class ObjectHandler {
     }
 
     public ObjectUnit read(Object object) {
-        return caughtUnsupportedException(object.getClass()).write(object);
+        return findPossiblePattern(object.getClass()).write(object);
     }
 
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
-        return (T) caughtUnsupportedException(clazz).read(clazz, objectUnit);
+        return (T) findPossiblePattern(clazz).read(clazz, objectUnit);
     }
 
-    private ObjectPattern caughtUnsupportedException(Class<?> clazz) {
+    private ObjectPattern findPossiblePattern(Class<?> clazz) {
         var pattern = Aeon.instance.findPattern(clazz);
         if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedWayException();
         return pattern.get();
