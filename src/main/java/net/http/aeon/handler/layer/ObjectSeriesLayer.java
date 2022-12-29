@@ -28,9 +28,9 @@ public final class ObjectSeriesLayer implements ObjectPattern {
     @Override
     public Object read(Class<?> clazz, ObjectUnit unit) {
         if (!(unit instanceof ObjectSeries series)) throw new UnsupportedWayException();
-        var array = Array.newInstance(clazz.getComponentType(), series.series().size());
-        for (var i = 0; i < series.series().size(); i++) {
-            Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(clazz.getComponentType(), series.series().get(i)));
+        var array = Array.newInstance(clazz.getComponentType(), series.getUnits().size());
+        for (var i = 0; i < series.getUnits().size(); i++) {
+            Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(clazz.getComponentType(), series.getUnits().get(i)));
         }
         return array;
     }

@@ -67,6 +67,6 @@ public final class RecordFileWriter extends DistanceElement {
     private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
         this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key+ ": ").append(openSymbol).append(nextLine());
         this.blockSet(handle);
-        this.builder.append(space()).append(closeSymbol).append(nextLine());
+        this.builder.append(space()).append(closeSymbol).append(seriesElement ? "," : AeonReflections.EMTPY_STRING).append(nextLine());
     }
 }

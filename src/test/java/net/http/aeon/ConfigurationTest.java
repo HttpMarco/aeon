@@ -9,8 +9,8 @@ public class ConfigurationTest {
         TestConfiguration insert = Aeon.insert(new TestConfiguration());
 
 
-        for (TestObject object : insert.getTestObjects()) {
-            System.out.println(object.getValue());
+        for (TestEnum object : insert.getTestObjects()) {
+            System.out.println(object.name());
         }
     }
 }
