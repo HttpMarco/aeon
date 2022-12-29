@@ -7,6 +7,5 @@ import net.http.aeon.annotations.Options;
 @Options(path = "src/test/java/net/http/aeon/", name = "config")
 public class TestConfiguration {
 
-    private Byte[] te = new Byte[]{0, 2};
 
 }
