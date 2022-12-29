@@ -20,10 +20,7 @@ import lombok.Getter;
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
-import net.http.aeon.handler.layer.ObjectAssortmentLayer;
-import net.http.aeon.handler.layer.ObjectEnumerationLayer;
-import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
-import net.http.aeon.handler.layer.ObjectSeriesLayer;
+import net.http.aeon.handler.layer.*;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -32,7 +29,7 @@ import java.util.Optional;
 @SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
-    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
+    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectListLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
