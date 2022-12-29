@@ -92,5 +92,4 @@ public final class RecordFileReader extends DistanceElement {
             series.add(instance);
         }
     }
-
 }
