@@ -57,11 +57,11 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeSeries(String key, ObjectSeries series) {
-        this.writeBlockElement(key, () -> series.series().forEach(it -> writeElement(null, it, true)), '{', '}', false);
+        this.writeBlockElement(key, () -> series.getUnits().forEach(it -> writeElement(null, it, true)), '{', '}', false);
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(seriesElement ? "," + nextLine() : nextLine());
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(nextLine());
     }
 
     private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
