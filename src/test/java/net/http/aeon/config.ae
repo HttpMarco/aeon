@@ -1,4 +1,11 @@
 testObjects: {
-   B,
-   A
+   [
+      value: 20
+   ],
+   [
+      value: 20
+   ],
+   [
+      value: 20
+   ]
 }
