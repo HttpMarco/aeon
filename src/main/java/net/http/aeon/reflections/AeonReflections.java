@@ -48,8 +48,6 @@ public final class AeonReflections {
         }
     }
 
-    private static native Object allocate0(Class<?> type);
-
     public static void modify(Field field, Object object, Object value) {
         try {
             field.setAccessible(true);
