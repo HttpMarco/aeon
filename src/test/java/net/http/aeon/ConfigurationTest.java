@@ -7,6 +7,5 @@ public class ConfigurationTest {
     @Test
     public void handle() {
         TestConfiguration insert = Aeon.insert(new TestConfiguration());
-        System.out.println(insert.getName());
     }
 }

@@ -4,9 +4,10 @@ import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
+
 import java.util.Locale;
 
-public final class ObjectEnumerationLayer<T extends Enum> implements ObjectPattern<T> {
+public final class ObjectEnumerationLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -20,12 +21,13 @@ public final class ObjectEnumerationLayer<T extends Enum> implements ObjectPatte
     }
 
     @Override
-    public T read(Class<T> clazz, ObjectUnit unit) {
+    public Object read(Class<?> clazz, ObjectUnit unit) {
         if (unit instanceof ObjectPrimitive primitive) {
+            var enumClass = (Class<? extends Enum>) clazz;
             try {
-                return (T) Enum.valueOf(clazz, primitive.getValue().toString().toUpperCase(Locale.ROOT));
+                return Enum.valueOf(enumClass, primitive.getValue().toString().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException exception) {
-                var constants = clazz.getEnumConstants();
+                var constants = enumClass.getEnumConstants();
                 var notPresentConstant = "Enum constant is not present: " + primitive.getValue().toString().toUpperCase(Locale.ROOT);
                 if (constants.length == 0) {
                     throw new UnsupportedWayException(notPresentConstant + ", no default value is present.");

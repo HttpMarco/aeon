@@ -24,7 +24,7 @@ import net.http.aeon.reflections.AeonReflections;
 
 import java.util.Arrays;
 
-public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
+public final class ObjectAssortmentLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -39,7 +39,7 @@ public final class ObjectAssortmentLayer implements ObjectPattern<Object> {
     }
 
     @Override
-    public Object read(Class<Object> clazz, ObjectUnit unit) {
+    public Object read(Class<?> clazz, ObjectUnit unit) {
         var object = AeonReflections.allocate(clazz);
         if (unit instanceof ObjectAssortment assortment) {
             Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
