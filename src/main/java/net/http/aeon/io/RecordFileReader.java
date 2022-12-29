@@ -61,7 +61,6 @@ public final class RecordFileReader extends DistanceElement {
     }
 
     private int readAssortment(List<String> lines, ObjectUnit unit, String key) {
-        if (!(unit instanceof ObjectAssortment assortment)) return 1;
         var id = 0;
         var instance = new ObjectAssortment();
         for (var index = 0; index < lines.size(); index++) {
@@ -69,7 +68,9 @@ public final class RecordFileReader extends DistanceElement {
             id = index;
             if (lines.get(id).contains("]")) break;
         }
-        assortment.append(key, instance);
+        if (unit instanceof ObjectAssortment assortment) {
+            assortment.append(key, instance);
+        }
         return ++id;
     }
 

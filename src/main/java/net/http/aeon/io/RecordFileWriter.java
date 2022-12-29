@@ -41,8 +41,8 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeElement(String key, ObjectUnit unit, boolean seriesElement) {
-        if (key == null && unit instanceof ObjectAssortment assortment) {
-            assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, seriesElement));
+        if (key == null && unit instanceof ObjectAssortment assortment && !seriesElement) {
+            assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, false));
         } else if (unit instanceof ObjectAssortment assortment) {
             this.writeAssortment(key, assortment, seriesElement);
         } else if (unit instanceof ObjectSeries series) {
@@ -53,19 +53,19 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeAssortment(String key, ObjectAssortment assortment, boolean seriesElement) {
-        this.writeBlockElement(key, () -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, seriesElement)), '[', ']');
+        this.writeBlockElement(key, () -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, false)), '[', ']', seriesElement);
     }
 
     private void writeSeries(String key, ObjectSeries series) {
-        this.writeBlockElement(key, () -> series.series().forEach(it -> writeElement(null, it, true)), '{', '}');
+        this.writeBlockElement(key, () -> series.series().forEach(it -> writeElement(null, it, true)), '{', '}', false);
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? "" : key + ": ").append(primitive.getValue()).append(seriesElement ? "," + nextLine() : nextLine());
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(seriesElement ? "," + nextLine() : nextLine());
     }
 
-    private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol) {
-        this.builder.append(space()).append(key).append(": ").append(openSymbol).append(nextLine());
+    private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key+ ": ").append(openSymbol).append(nextLine());
         this.blockSet(handle);
         this.builder.append(space()).append(closeSymbol).append(nextLine());
     }
