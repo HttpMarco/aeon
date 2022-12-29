@@ -63,7 +63,6 @@ public final class RecordFileReader extends DistanceElement {
         for (var index = 0; index < lines.size(); index++) {
             var line = lines.get(index);
             id = index;
-
             if (line.contains("}")) break;
             series.add(new ObjectPrimitive(line.substring(0, line.length() - 1)));
         }

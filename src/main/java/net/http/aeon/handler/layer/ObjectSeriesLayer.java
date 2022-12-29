@@ -18,8 +18,8 @@ public final class ObjectSeriesLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object o) {
         var series = new ObjectSeries();
-        for (int i = 0; i < Array.getLength(o); i++) {
-            Object element = Array.get(o, i);
+        for (var i = 0; i < Array.getLength(o); i++) {
+            var element = Array.get(o, i);
             Aeon.instance.findPattern(element.getClass()).ifPresent(pattern -> series.add(pattern.write(element)));
         }
         return series;

@@ -4,6 +4,7 @@ import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
+
 import java.util.Locale;
 
 public final class ObjectEnumerationLayer implements ObjectPattern {
@@ -22,7 +23,7 @@ public final class ObjectEnumerationLayer implements ObjectPattern {
     @Override
     public Object read(Class<?> clazz, ObjectUnit unit) {
         if (unit instanceof ObjectPrimitive primitive) {
-            Class<? extends Enum> enumClass = (Class<? extends Enum>) clazz;
+            var enumClass = (Class<? extends Enum>) clazz;
             try {
                 return Enum.valueOf(enumClass, primitive.getValue().toString().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException exception) {
