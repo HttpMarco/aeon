@@ -1,10 +1,25 @@
+/*
+ * Copyright 2022 Aeon contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.http.aeon.io;
 
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.reflections.AeonPathFinder;
 import net.http.aeon.reflections.AeonReflections;
 
@@ -17,7 +32,6 @@ public final class RecordFileWriter extends DistanceElement {
 
     public RecordFileWriter(Object value, ObjectUnit unit) {
         writeElement(null, unit, false);
-
         try (var reader = Files.newBufferedWriter(AeonPathFinder.find(value))) {
             reader.write(this.builder.toString());
         } catch (IOException exception) {
@@ -26,30 +40,47 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeElement(String key, ObjectUnit unit, boolean seriesElement) {
-        if (key == null && unit instanceof ObjectAssortment assortment) {
-            assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, seriesElement));
+
+        //write comments
+        if(unit.getComments() != null) {
+            for (String comment : unit.getComments()) {
+                builder.append(space()).append("# ").append(comment).append(NEXT_LINE);
+            }
+        }
+
+        if (key == null && unit instanceof ObjectAssortment assortment && !seriesElement) {
+            assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, false));
         } else if (unit instanceof ObjectAssortment assortment) {
             this.writeAssortment(key, assortment, seriesElement);
         } else if (unit instanceof ObjectSeries series) {
             this.writeSeries(key, series);
         } else if (unit instanceof ObjectPrimitive primitive) {
             this.writePrimitive(primitive, key, seriesElement);
-        } else throw new UnsupportedWayException();
+        } else throw new UnsupportedOperationException();
     }
 
     private void writeAssortment(String key, ObjectAssortment assortment, boolean seriesElement) {
-        this.builder.append(space()).append(key).append(": [").append(nextLine());
-        this.blockSet(() -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, seriesElement)));
-        this.builder.append(space()).append("]").append(nextLine());
+        this.writeBlockElement(key, () -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, false)), '[', ']', seriesElement);
     }
 
     private void writeSeries(String key, ObjectSeries series) {
-        this.builder.append(space()).append(key).append(": {").append(nextLine());
-        this.blockSet(() -> series.series().forEach(it -> writeElement(null, it, true)));
-        this.builder.append(space()).append("}").append(nextLine());
+        this.writeBlockElement(key, () -> {
+            for (int i = 0; i < series.getUnits().size(); i++) {
+                writeElement(null, series.getUnits().get(i), true);
+                if (i < series.getUnits().size()-1) {
+                    this.builder.delete(this.builder.length()-1, this.builder.length()).append(",\n");
+                }
+            }
+        }, '{', '}', false);
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? "" : key + ": ").append(primitive.getValue()).append(seriesElement ? "," + nextLine() : nextLine());
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue()).append(NEXT_LINE);
+    }
+
+    private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
+        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(openSymbol).append(NEXT_LINE);
+        this.blockSet(handle);
+        this.builder.append(space()).append(closeSymbol).append(NEXT_LINE);
     }
 }

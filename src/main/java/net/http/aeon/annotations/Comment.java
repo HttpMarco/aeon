@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package net.http.aeon.exceptions;
+package net.http.aeon.annotations;
 
-public final class UnsupportedWayException extends RuntimeException {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public UnsupportedWayException() {
-        super();
-    }
+@Target({ElementType.TYPE, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Comment {
 
-    public UnsupportedWayException(String message) {
-        super(message);
-    }
+    String[] comment();
+
 }

@@ -19,36 +19,32 @@ package net.http.aeon.handler;
 import lombok.Getter;
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
-import net.http.aeon.handler.layer.ObjectAssortmentLayer;
-import net.http.aeon.handler.layer.ObjectEnumerationLayer;
-import net.http.aeon.handler.layer.ObjectPrimitiveLayer;
-import net.http.aeon.handler.layer.ObjectSeriesLayer;
+import net.http.aeon.handler.layer.*;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @Getter
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
-    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
+    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectListLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
     }
 
     public ObjectUnit read(Object object) {
-        return caughtUnsupportedException(object.getClass()).write(object);
+        return findPossiblePattern(object.getClass()).write(object);
     }
 
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
-        return (T) caughtUnsupportedException(clazz).read(clazz, objectUnit);
+        return (T) findPossiblePattern(clazz).read(clazz, objectUnit);
     }
 
-    private ObjectPattern caughtUnsupportedException(Class<?> clazz) {
+    private ObjectPattern findPossiblePattern(Class<?> clazz) {
         var pattern = Aeon.instance.findPattern(clazz);
-        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedWayException();
+        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedOperationException();
         return pattern.get();
     }
 }

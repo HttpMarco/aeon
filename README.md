@@ -92,7 +92,7 @@ testValue: 22
 
 Add header or spaces for configuration field 
 `````java 
-@CommentedArgument(comment = "Test comment", type = Emphasizing.PRIMARY)
+@Comment(comment = "Test comment", type = Emphasizing.PRIMARY)
 `````
 
 ****
