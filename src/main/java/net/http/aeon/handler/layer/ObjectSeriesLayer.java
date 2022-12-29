@@ -3,7 +3,6 @@ package net.http.aeon.handler.layer;
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.ObjectPattern;
 
 import java.lang.reflect.Array;
@@ -27,7 +26,7 @@ public final class ObjectSeriesLayer implements ObjectPattern {
 
     @Override
     public Object read(Class<?> clazz, ObjectUnit unit) {
-        if (!(unit instanceof ObjectSeries series)) throw new UnsupportedWayException();
+        if (!(unit instanceof ObjectSeries series)) throw new UnsupportedOperationException();
         var array = Array.newInstance(clazz.getComponentType(), series.getUnits().size());
         for (var i = 0; i < series.getUnits().size(); i++) {
             Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(clazz.getComponentType(), series.getUnits().get(i)));

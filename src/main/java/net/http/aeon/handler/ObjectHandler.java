@@ -19,7 +19,6 @@ package net.http.aeon.handler;
 import lombok.Getter;
 import net.http.aeon.Aeon;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.handler.layer.*;
 
 import java.util.Arrays;
@@ -45,7 +44,7 @@ public final class ObjectHandler {
 
     private ObjectPattern findPossiblePattern(Class<?> clazz) {
         var pattern = Aeon.instance.findPattern(clazz);
-        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedWayException();
+        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedOperationException();
         return pattern.get();
     }
 }

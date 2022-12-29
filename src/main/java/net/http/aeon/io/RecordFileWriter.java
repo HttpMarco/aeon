@@ -20,7 +20,6 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.reflections.AeonPathFinder;
 import net.http.aeon.reflections.AeonReflections;
 
@@ -49,7 +48,7 @@ public final class RecordFileWriter extends DistanceElement {
             this.writeSeries(key, series);
         } else if (unit instanceof ObjectPrimitive primitive) {
             this.writePrimitive(primitive, key, seriesElement);
-        } else throw new UnsupportedWayException();
+        } else throw new UnsupportedOperationException();
     }
 
     private void writeAssortment(String key, ObjectAssortment assortment, boolean seriesElement) {

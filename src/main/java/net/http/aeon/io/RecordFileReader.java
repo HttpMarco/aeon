@@ -22,7 +22,6 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.exceptions.UnsupportedWayException;
 import net.http.aeon.reflections.AeonPathFinder;
 
 import java.nio.file.Files;
@@ -49,7 +48,7 @@ public final class RecordFileReader extends DistanceElement {
         } else if (lines.get(0).contains(": ")) {
             return readPrimitive(unit, lines.get(0).split(": "));
         } else {
-            throw new UnsupportedWayException("Element: " + lines.get(0));
+            throw new UnsupportedOperationException("Element: " + lines.get(0));
         }
     }
 
