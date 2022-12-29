@@ -40,6 +40,14 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writeElement(String key, ObjectUnit unit, boolean seriesElement) {
+
+        //write comments
+        if(unit.getComments() != null) {
+            for (String comment : unit.getComments()) {
+                builder.append(space()).append("# ").append(comment).append(NEXT_LINE);
+            }
+        }
+
         if (key == null && unit instanceof ObjectAssortment assortment && !seriesElement) {
             assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, false));
         } else if (unit instanceof ObjectAssortment assortment) {

@@ -17,6 +17,7 @@
 package net.http.aeon.handler.layer;
 
 import net.http.aeon.Aeon;
+import net.http.aeon.annotations.Comment;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
@@ -34,7 +35,13 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> assortment.append(it.getName(), pattern.write(AeonReflections.get(it, value)))));
+        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
+            ObjectUnit unit = pattern.write(AeonReflections.get(it, value));
+            if (it.isAnnotationPresent(Comment.class)) {
+                unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
+            }
+            assortment.append(it.getName(), unit);
+        }));
         return assortment;
     }
 
