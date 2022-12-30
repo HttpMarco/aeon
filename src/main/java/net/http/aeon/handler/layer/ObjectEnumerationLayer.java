@@ -4,6 +4,7 @@ import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 
+import java.lang.reflect.Type;
 import java.util.Locale;
 
 public final class ObjectEnumerationLayer implements ObjectPattern {
@@ -14,13 +15,13 @@ public final class ObjectEnumerationLayer implements ObjectPattern {
     }
 
     @Override
-    public ObjectUnit write(Object o) {
-        if (!(o instanceof Enum<?> object)) throw new UnsupportedOperationException("The given object is not an enumeration");
-        return new ObjectPrimitive(object.name());
+    public ObjectUnit write(Object object) {
+        if (!(object instanceof Enum<?> enumeration)) throw new UnsupportedOperationException("The given object is not an enumeration");
+        return new ObjectPrimitive(enumeration.name());
     }
 
     @Override
-    public Object read(Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
         if (unit instanceof ObjectPrimitive primitive) {
             var enumClass = (Class<? extends Enum>) clazz;
             try {

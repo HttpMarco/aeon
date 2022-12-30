@@ -8,9 +8,8 @@ public class ConfigurationTest {
     public void handle() {
         TestConfiguration insert = Aeon.insert(new TestConfiguration());
 
-
-        for (TestObject object : insert.getTestObjects()) {
-            System.out.println(object.getValue());
+        for (String object : insert.getCollection()) {
+            System.out.println(object);
         }
     }
 }

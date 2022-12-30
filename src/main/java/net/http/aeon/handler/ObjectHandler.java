@@ -28,7 +28,7 @@ import java.util.Optional;
 @SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
-    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectListLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
+    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectCollectionLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
@@ -39,7 +39,7 @@ public final class ObjectHandler {
     }
 
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
-        return (T) findPossiblePattern(clazz).read(clazz, objectUnit);
+        return (T) findPossiblePattern(clazz).read(null, clazz, objectUnit);
     }
 
     private ObjectPattern findPossiblePattern(Class<?> clazz) {
