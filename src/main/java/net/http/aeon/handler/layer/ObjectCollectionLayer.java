@@ -25,11 +25,9 @@ public final class ObjectCollectionLayer implements ObjectPattern {
     public ObjectUnit write(Object o) {
         var collection = (Collection<?>) o;
         var series = new ObjectSeries();
-        System.out.println("write size; " + collection.size());
         for (Object elements : collection) {
             Aeon.instance.findPattern(elements.getClass()).ifPresent(pattern -> series.add(pattern.write(elements)));
         }
-        System.out.println("Success write size; " + series.getUnits().size());
         return series;
     }
 
@@ -39,7 +37,6 @@ public final class ObjectCollectionLayer implements ObjectPattern {
         if (!(unit instanceof ObjectSeries series)) throw new UnsupportedOperationException();
         Class<?> typeClass = (Class<?>) ( (ParameterizedType) type).getActualTypeArguments()[0];
         List<Object> collect = series.getUnits().stream().map(it -> Aeon.instance.findPattern(typeClass).get().read(null, typeClass, it)).collect(Collectors.toList());
-        System.out.println(collect.size() + "#");
         return collect;
     }
 }
