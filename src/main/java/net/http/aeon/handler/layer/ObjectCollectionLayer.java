@@ -1,11 +1,20 @@
 package net.http.aeon.handler.layer;
 
+import net.http.aeon.Aeon;
+import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
+import net.http.aeon.reflections.AeonReflections;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class ObjectCollectionLayer implements ObjectPattern {
+public final class ObjectCollectionLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -14,13 +23,23 @@ public class ObjectCollectionLayer implements ObjectPattern {
 
     @Override
     public ObjectUnit write(Object o) {
-        //convert to array
-        return null;
+        var collection = (Collection<?>) o;
+        var series = new ObjectSeries();
+        System.out.println("write size; " + collection.size());
+        for (Object elements : collection) {
+            Aeon.instance.findPattern(elements.getClass()).ifPresent(pattern -> series.add(pattern.write(elements)));
+        }
+        System.out.println("Success write size; " + series.getUnits().size());
+        return series;
     }
 
     @Override
-    public Object read(Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
         //convert to array
-        return null;
+        if (!(unit instanceof ObjectSeries series)) throw new UnsupportedOperationException();
+        Class<?> typeClass = (Class<?>) ( (ParameterizedType) type).getActualTypeArguments()[0];
+        List<Object> collect = series.getUnits().stream().map(it -> Aeon.instance.findPattern(typeClass).get().read(null, typeClass, it)).collect(Collectors.toList());
+        System.out.println(collect.size() + "#");
+        return collect;
     }
 }

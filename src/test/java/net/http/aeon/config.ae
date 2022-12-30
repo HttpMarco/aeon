@@ -1,9 +1,5 @@
 # Test argument
-testObjects: {
-   [
-      value: 20
-   ],
-   [
-      value: 20
-   ]
+collection: {
+   a,
+   b
 }

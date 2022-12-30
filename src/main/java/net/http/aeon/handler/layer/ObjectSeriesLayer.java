@@ -6,6 +6,7 @@ import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 
 public final class ObjectSeriesLayer implements ObjectPattern {
 
@@ -19,17 +20,19 @@ public final class ObjectSeriesLayer implements ObjectPattern {
         var series = new ObjectSeries();
         for (var i = 0; i < Array.getLength(o); i++) {
             var element = Array.get(o, i);
-            Aeon.instance.findPattern(element.getClass()).ifPresent(pattern -> series.add(pattern.write(element)));
+
+            //no type present
+            Aeon.instance.findPattern(element.getClass()).ifPresent(pattern -> series.add(pattern.write( element)));
         }
         return series;
     }
 
     @Override
-    public Object read(Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
         if (!(unit instanceof ObjectSeries series)) throw new UnsupportedOperationException();
         var array = Array.newInstance(clazz.getComponentType(), series.getUnits().size());
         for (var i = 0; i < series.getUnits().size(); i++) {
-            Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(clazz.getComponentType(), series.getUnits().get(i)));
+            Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(null, clazz.getComponentType(), series.getUnits().get(i)));
         }
         return array;
     }

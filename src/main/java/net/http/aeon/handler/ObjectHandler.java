@@ -39,7 +39,7 @@ public final class ObjectHandler {
     }
 
     public <T> T as(ObjectUnit objectUnit, Class<T> clazz) {
-        return (T) findPossiblePattern(clazz).read(clazz, objectUnit);
+        return (T) findPossiblePattern(clazz).read(null, clazz, objectUnit);
     }
 
     private ObjectPattern findPossiblePattern(Class<?> clazz) {
