@@ -3,23 +3,24 @@ package net.http.aeon.handler.layer;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 
-public class ObjectListLayer implements ObjectPattern {
+import java.util.Collection;
+
+public class ObjectCollectionLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
-        //todo
-        return false;
+        return clazz.isAssignableFrom(Collection.class);
     }
 
     @Override
     public ObjectUnit write(Object o) {
-        //todo
+        //convert to array
         return null;
     }
 
     @Override
     public Object read(Class<?> clazz, ObjectUnit unit) {
-        //todo
+        //convert to array
         return null;
     }
 }
