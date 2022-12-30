@@ -7,13 +7,14 @@ import net.http.aeon.annotations.Options;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Options(path = "src/test/java/net/http/aeon/", name = "config")
 public class TestConfiguration {
 
     @Comment(comment = {"Test argument"})
-    private Collection<String> collection;
+    private List<String> collection;
 
     public TestConfiguration() {
         this.collection = new ArrayList<>();

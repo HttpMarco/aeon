@@ -18,7 +18,7 @@ public final class ObjectCollectionLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
-        return clazz.isAssignableFrom(Collection.class);
+        return Collection.class.isAssignableFrom(clazz);
     }
 
     @Override
