@@ -62,8 +62,8 @@ public final class RecordFileReader extends DistanceElement {
         var id = 0;
         var instance = new ObjectAssortment();
         for (id = 0; id < lines.size(); id++) {
-            id += readElement(lines.subList(0, lines.size()), instance);
             if (lines.get(id).contains("]")) break;
+            id += readElement(lines.subList(id, lines.size()), instance);
         }
         this.add(unit, key, instance);
         return ++id;
@@ -78,7 +78,7 @@ public final class RecordFileReader extends DistanceElement {
             if (line.contains("[")) {
                 id += readAssortment(lines.subList(id + 1, lines.size()), series, null);
             } else {
-                series.add(new ObjectPrimitive(line.substring(0, line.endsWith(",") ? line.length() - 1 : line.length())));
+                series.add(new ObjectPrimitive(line.substring(id, line.endsWith(",") ? line.length() - 1 : line.length())));
             }
         }
         this.add(unit, key, series);
