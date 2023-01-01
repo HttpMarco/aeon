@@ -16,8 +16,12 @@ public final class ObjectEnumerationLayer implements ObjectPattern {
 
     @Override
     public ObjectUnit write(Object object) {
-        if (!(object instanceof Enum<?> enumeration)) throw new UnsupportedOperationException("The given object is not an enumeration");
-        return new ObjectPrimitive(enumeration.name());
+
+        if(object == null) {
+            System.out.println("Enum variable is null");
+        }
+
+        return new ObjectPrimitive(((Enum<?>) object).name());
     }
 
     @Override
