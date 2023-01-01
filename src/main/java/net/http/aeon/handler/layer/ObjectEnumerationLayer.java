@@ -16,11 +16,6 @@ public final class ObjectEnumerationLayer implements ObjectPattern {
 
     @Override
     public ObjectUnit write(Object object) {
-
-        if(object == null) {
-            System.out.println("Enum variable is null");
-        }
-
         return new ObjectPrimitive(((Enum<?>) object).name());
     }
 
