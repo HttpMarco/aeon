@@ -16,20 +16,29 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    compileOnly ("org.projectlombok:lombok:1.18.24")
-    annotationProcessor ("org.projectlombok:lombok:1.18.24")
-    testCompileOnly ("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor ("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:1.18.24")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
+    testCompileOnly("org.projectlombok:lombok:1.18.24")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
 }
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+    compileTestJava {
+        options.encoding = "UTF-8"
+    }
+}
+
 publishing {
     publications {
         create("maven_public", MavenPublication::class) {
-            groupId =  "net.http.aeon"
+            groupId = "net.http.aeon"
             artifactId = "Aeon"
             version = "1.0.4"
             from(components.getByName("java"))
