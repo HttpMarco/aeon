@@ -22,9 +22,9 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.reflections.AeonPathFinder;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public final class RecordFileReader extends DistanceElement {
@@ -33,8 +33,8 @@ public final class RecordFileReader extends DistanceElement {
     private final ObjectAssortment objectAssortment = new ObjectAssortment();
 
     @SneakyThrows
-    public RecordFileReader(Object object) {
-        var lines = Files.readAllLines(AeonPathFinder.find(object)).stream().map(String::trim).filter(it -> !(it.isEmpty() || it.startsWith("#"))).toList();
+    public RecordFileReader(Path path) {
+        var lines = Files.readAllLines(path).stream().map(String::trim).filter(it -> !(it.isEmpty() || it.startsWith("#"))).toList();
         for (var index = 0; index < lines.size(); index++) {
             index += readElement(lines.subList(index, lines.size()), objectAssortment);
         }

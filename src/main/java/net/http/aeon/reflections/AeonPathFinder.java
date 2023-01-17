@@ -16,7 +16,6 @@
 
 package net.http.aeon.reflections;
 
-import net.http.aeon.Aeon;
 import net.http.aeon.annotations.Options;
 
 import java.nio.file.Files;
@@ -30,7 +29,7 @@ public final class AeonPathFinder {
             var opt = value.getClass().getAnnotation(Options.class);
             path = (opt.path().isEmpty() ? AeonReflections.EMTPY_STRING : opt.path()) + (opt.name().isEmpty() ? value.getClass().getSimpleName() : opt.name());
         }
-        return Path.of(path + Aeon.FILE_EXTENSION);
+        return Path.of(path);
     }
 
     public static boolean isPresent(Object value) {

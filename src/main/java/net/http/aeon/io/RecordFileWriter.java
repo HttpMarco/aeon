@@ -20,20 +20,20 @@ import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.reflections.AeonPathFinder;
 import net.http.aeon.reflections.AeonReflections;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 public final class RecordFileWriter extends DistanceElement {
 
     private final StringBuilder builder = new StringBuilder();
 
-    public RecordFileWriter(Object value, ObjectUnit unit) {
+    public RecordFileWriter(ObjectUnit unit, Path path) {
         writeElement(null, unit, false);
-        try (var reader = Files.newBufferedWriter(AeonPathFinder.find(value), StandardCharsets.UTF_8)) {
+        try (var reader = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             reader.write(this.builder.toString());
         } catch (IOException exception) {
             exception.printStackTrace();
