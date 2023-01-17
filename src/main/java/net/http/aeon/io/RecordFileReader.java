@@ -42,6 +42,7 @@ public final class RecordFileReader extends DistanceElement {
 
     private int readElement(List<String> lines, ObjectUnit unit) {
         var line = lines.get(0);
+        System.out.println(line);
         if (line.contains(": [")) {
             return readAssortment(lines.subList(1, lines.size()), unit,line.split(": ")[0]);
         } else if (line.contains(": {")) {
@@ -63,7 +64,7 @@ public final class RecordFileReader extends DistanceElement {
         var id = 0;
         var instance = new ObjectAssortment();
         for (id = 0; id < lines.size(); id++) {
-            if (lines.get(id).contains("]")) break;
+            if (lines.get(id).equals("]")) break;
             id += readElement(lines.subList(id, lines.size()), instance);
         }
         this.add(unit, key, instance);
