@@ -34,7 +34,7 @@ public final class RecordFileWriter extends DistanceElement {
     public RecordFileWriter(ObjectUnit unit, Path path) {
         writeElement(null, unit, false);
 
-        if(!Files.exists(path)) {
+        if(!Files.exists(path) && path.toFile().getParentFile() != null) {
             path.toFile().getParentFile().mkdirs();
         }
 
