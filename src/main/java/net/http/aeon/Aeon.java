@@ -22,20 +22,28 @@ import net.http.aeon.io.RecordFileReader;
 import net.http.aeon.io.RecordFileWriter;
 import net.http.aeon.reflections.AeonPathFinder;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 @SuppressWarnings("ALL")
 public final class Aeon {
 
-    public static final String FILE_EXTENSION = ".ae";
     public static final ObjectHandler instance = new ObjectHandler();
 
-    public static <T> T insert(@NonNull T value) {
-        if(AeonPathFinder.isPresent(value)) {
-            var element = (T) instance.as(new RecordFileReader(value).getObjectAssortment(), value.getClass());
+    public static <T> T insert(@NonNull T value, Path path) {
+        path = Path.of(path + ".ae");
+        if(Files.exists(path)) {
+            var element = (T) instance.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
             //overwrite existing property
-            new RecordFileWriter(element, instance.read(element));
+            new RecordFileWriter(instance.read(element), path);
             return element;
         }
-        new RecordFileWriter(value, instance.read(value));
+        new RecordFileWriter(instance.read(value), path);
         return value;
     }
+
+    public static <T> T insert(@NonNull T value) {
+        return insert(value, AeonPathFinder.find(value));
+    }
+
 }
