@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = "net.http.aeon"
-    version = "1.0.4"
+    version = "1.0.5"
     description = "Configuration Framework"
 }
 
@@ -40,7 +40,7 @@ publishing {
         create("maven_public", MavenPublication::class) {
             groupId = "net.http.aeon"
             artifactId = "Aeon"
-            version = "1.0.4"
+            version = "1.0.5"
             from(components.getByName("java"))
         }
     }
