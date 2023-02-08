@@ -16,7 +16,9 @@
 
 package net.http.aeon;
 
+import lombok.Getter;
 import lombok.NonNull;
+import net.http.aeon.adapter.TypeAdapterPool;
 import net.http.aeon.handler.ObjectHandler;
 import net.http.aeon.io.RecordFileReader;
 import net.http.aeon.io.RecordFileWriter;
@@ -26,19 +28,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @SuppressWarnings("ALL")
+@Getter
 public final class Aeon {
 
-    public static final ObjectHandler instance = new ObjectHandler();
+    private static final ObjectHandler objectHandler = new ObjectHandler();
+    private static final TypeAdapterPool typeAdapterPool = new TypeAdapterPool();
 
     public static <T> T insert(@NonNull T value, Path path) {
         path = Path.of(path + ".ae");
         if(Files.exists(path)) {
-            var element = (T) instance.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
+            var element = (T) objectHandler.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
             //overwrite existing property
-            new RecordFileWriter(instance.read(element), path);
+            new RecordFileWriter(objectHandler.read(element), path);
             return element;
         }
-        new RecordFileWriter(instance.read(value), path);
+        new RecordFileWriter(objectHandler.read(value), path);
         return value;
     }
 
