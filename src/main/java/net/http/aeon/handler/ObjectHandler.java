@@ -50,7 +50,7 @@ public final class ObjectHandler {
     }
 
     private ObjectPattern findPossiblePattern(Class<?> clazz) {
-        var pattern = Aeon.instance.findPattern(clazz);
+        var pattern = Aeon.getObjectHandler().findPattern(clazz);
         if (pattern.isEmpty() || (!(pattern.get() instanceof ObjectAssortmentLayer) && (!(pattern.get() instanceof ObjectRecordLayer)))) throw new UnsupportedOperationException();
         return pattern.get();
     }

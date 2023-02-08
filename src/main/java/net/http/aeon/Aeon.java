@@ -18,6 +18,7 @@ package net.http.aeon;
 
 import lombok.Getter;
 import lombok.NonNull;
+import net.http.aeon.adapter.TypeAdapterFactory;
 import net.http.aeon.adapter.TypeAdapterPool;
 import net.http.aeon.handler.ObjectHandler;
 import net.http.aeon.io.RecordFileReader;
@@ -28,11 +29,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @SuppressWarnings("ALL")
-@Getter
 public final class Aeon {
 
+    @Getter
     private static final ObjectHandler objectHandler = new ObjectHandler();
-    private static final TypeAdapterPool typeAdapterPool = new TypeAdapterPool();
+    @Getter
+    private static final TypeAdapterFactory typeAdapterFactory = new TypeAdapterFactory();
 
     public static <T> T insert(@NonNull T value, Path path) {
         path = Path.of(path + ".ae");

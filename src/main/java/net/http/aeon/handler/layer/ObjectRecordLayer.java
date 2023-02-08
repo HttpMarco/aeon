@@ -24,7 +24,7 @@ public class ObjectRecordLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
+        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
             ObjectUnit unit = pattern.write(AeonReflections.get(it, value));
             if (it.isAnnotationPresent(Comment.class)) {
                 unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
@@ -40,7 +40,7 @@ public class ObjectRecordLayer implements ObjectPattern {
         Class<?>[] types = Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value]);
         List<Object> typeObjects = new ArrayList<>();
         if (unit instanceof ObjectAssortment assortment) {
-            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
+            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
                 if (assortment.get(it.getName()) != null) {
                     typeObjects.add(pattern.read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
                 }
