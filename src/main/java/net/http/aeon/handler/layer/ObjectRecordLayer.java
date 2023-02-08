@@ -10,7 +10,9 @@ import net.http.aeon.reflections.AeonReflections;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ObjectRecordLayer implements ObjectPattern {
 
@@ -35,7 +37,16 @@ public class ObjectRecordLayer implements ObjectPattern {
     @SneakyThrows
     @Override
     public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
-        //TODO: add data
-        return clazz.getClass().getDeclaredConstructor(Arrays.stream(clazz.getClass().getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value])).newInstance(null, 3);
+        Class<?>[] types = Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value]);
+        List<Object> typeObjects = new ArrayList<>();
+        if (unit instanceof ObjectAssortment assortment) {
+            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.instance.findPattern(it.getType()).ifPresent(pattern -> {
+                if (assortment.get(it.getName()) != null) {
+                    typeObjects.add(pattern.read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
+                }
+                //TODO: add default handler
+            }));
+        }
+        return clazz.getDeclaredConstructor(types).newInstance(typeObjects.toArray());
     }
 }
