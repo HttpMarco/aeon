@@ -1,9 +1,11 @@
 package net.http.aeon;
 
 import lombok.Getter;
+import net.http.aeon.annotations.Options;
 
 import java.util.UUID;
 
+@Options(name = "test")
 public class TestConfiguration {
 
     @Getter
