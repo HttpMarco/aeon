@@ -112,9 +112,7 @@ Todo 'Release':
 
 - [ ] Handle of null parameters
 - [ ] rename for configuration files
-- [x] Support Enumerations
-- [ ] Support Array, Map, Lists, Pair
+- [ ] Support Map, Pair
 - [ ] Add comments for fields
 - [ ] remove duplicated renamed fields
-- [ ] factory for default values
 - [ ] Customize handler for object serialization

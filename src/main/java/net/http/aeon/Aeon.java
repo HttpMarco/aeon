@@ -16,7 +16,11 @@
 
 package net.http.aeon;
 
+import lombok.Getter;
 import lombok.NonNull;
+import net.http.aeon.adapter.TypeAdapterFactory;
+import net.http.aeon.adapter.TypeAdapterPool;
+import net.http.aeon.annotations.Options;
 import net.http.aeon.handler.ObjectHandler;
 import net.http.aeon.io.RecordFileReader;
 import net.http.aeon.io.RecordFileWriter;
@@ -28,17 +32,27 @@ import java.nio.file.Path;
 @SuppressWarnings("ALL")
 public final class Aeon {
 
-    public static final ObjectHandler instance = new ObjectHandler();
+    @Getter
+    private static final ObjectHandler objectHandler = new ObjectHandler();
+    @Getter
+    private static final TypeAdapterFactory typeAdapterFactory = new TypeAdapterFactory();
 
     public static <T> T insert(@NonNull T value, Path path) {
+        if (value.getClass().isAnnotationPresent(Options.class)) {
+            Options options = value.getClass().getDeclaredAnnotation(Options.class);
+            if (options.name().length() > 0) {
+                path = path.resolve(Path.of(options.name()));
+            }
+        }
         path = Path.of(path + ".ae");
-        if(Files.exists(path)) {
-            var element = (T) instance.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
+
+        if (Files.exists(path)) {
+            var element = (T) objectHandler.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
             //overwrite existing property
-            new RecordFileWriter(instance.read(element), path);
+            new RecordFileWriter(objectHandler.read(element), path);
             return element;
         }
-        new RecordFileWriter(instance.read(value), path);
+        new RecordFileWriter(objectHandler.read(value), path);
         return value;
     }
 

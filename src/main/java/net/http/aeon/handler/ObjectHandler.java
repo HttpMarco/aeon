@@ -28,7 +28,14 @@ import java.util.Optional;
 @SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
-    private final ObjectPattern[] patterns = new ObjectPattern[]{new ObjectSeriesLayer(), new ObjectCollectionLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(), new ObjectAssortmentLayer()};
+    private final ObjectPattern[] patterns = new ObjectPattern[]{
+            new ObjectSeriesLayer(),
+            new ObjectCollectionLayer(),
+            new ObjectEnumerationLayer(),
+            new ObjectPrimitiveLayer(),
+            new ObjectRecordLayer(),
+            new ObjectAssortmentLayer(),
+    };
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();
@@ -43,8 +50,8 @@ public final class ObjectHandler {
     }
 
     private ObjectPattern findPossiblePattern(Class<?> clazz) {
-        var pattern = Aeon.instance.findPattern(clazz);
-        if (pattern.isEmpty() || !(pattern.get() instanceof ObjectAssortmentLayer)) throw new UnsupportedOperationException();
+        var pattern = Aeon.getObjectHandler().findPattern(clazz);
+        if (pattern.isEmpty() || (!(pattern.get() instanceof ObjectAssortmentLayer) && (!(pattern.get() instanceof ObjectRecordLayer)))) throw new UnsupportedOperationException();
         return pattern.get();
     }
 }

@@ -22,7 +22,7 @@ public final class ObjectSeriesLayer implements ObjectPattern {
             var element = Array.get(o, i);
 
             //no type present
-            Aeon.instance.findPattern(element.getClass()).ifPresent(pattern -> series.add(pattern.write( element)));
+            Aeon.getObjectHandler().findPattern(element.getClass()).ifPresent(pattern -> series.add(pattern.write( element)));
         }
         return series;
     }
@@ -32,7 +32,7 @@ public final class ObjectSeriesLayer implements ObjectPattern {
         if (!(unit instanceof ObjectSeries series)) throw new UnsupportedOperationException();
         var array = Array.newInstance(clazz.getComponentType(), series.getUnits().size());
         for (var i = 0; i < series.getUnits().size(); i++) {
-            Array.set(array, i, Aeon.instance.findPattern(clazz.getComponentType()).get().read(null, clazz.getComponentType(), series.getUnits().get(i)));
+            Array.set(array, i, Aeon.getObjectHandler().findPattern(clazz.getComponentType()).get().read(null, clazz.getComponentType(), series.getUnits().get(i)));
         }
         return array;
     }
