@@ -12,6 +12,6 @@ public class TestConfiguration {
     private UUID uuid;
 
     public TestConfiguration() {
-        this.uuid = UUID.randomUUID();
+        this.uuid = null;
     }
 }

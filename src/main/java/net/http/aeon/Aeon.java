@@ -47,12 +47,12 @@ public final class Aeon {
         path = Path.of(path + ".ae");
 
         if (Files.exists(path)) {
-            var element = (T) objectHandler.as(new RecordFileReader(path).getObjectAssortment(), value.getClass());
+            var element = (T) objectHandler.read(null, value.getClass(), new RecordFileReader(path).getObjectAssortment());
             //overwrite existing property
-            new RecordFileWriter(objectHandler.read(element), path);
+            new RecordFileWriter(objectHandler.write(value.getClass(), element), path);
             return element;
         }
-        new RecordFileWriter(objectHandler.read(value), path);
+        new RecordFileWriter(objectHandler.write(value.getClass(), value), path);
         return value;
     }
 

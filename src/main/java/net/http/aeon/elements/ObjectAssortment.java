@@ -33,4 +33,8 @@ public final class ObjectAssortment extends ObjectUnit {
     public ObjectUnit get(String key) {
         return this.units.get(key);
     }
+
+    public boolean has(String key) {
+        return this.units.containsKey(key);
+    }
 }
