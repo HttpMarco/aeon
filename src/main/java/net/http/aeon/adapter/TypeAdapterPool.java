@@ -1,24 +1,20 @@
 package net.http.aeon.adapter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class TypeAdapterPool {
 
-    private final Map<Class<?>, TypeAdapter> typeAdapters = new HashMap<>();
+    private final List<TypeAdapter> typeAdapters = new ArrayList<>();
 
     public boolean isPresent(Class<?> clazz) {
-        return typeAdapters.containsKey(clazz) || (Arrays.stream(clazz.getInterfaces()).anyMatch(typeAdapters::containsKey));
+        return typeAdapters.stream().anyMatch(it -> it.isElement(clazz));
     }
 
     public TypeAdapter get(Class<?> clazz) {
-        return typeAdapters.get(clazz);
+        return typeAdapters.stream().filter(it -> it.isElement(clazz)).findFirst().orElse(null);
     }
 
-    public void registerTypeAdapter(TypeAdapter typeAdapter, Class<?>... clazz) {
-        for (Class<?> aClass : clazz) {
-            this.typeAdapters.put(aClass, typeAdapter);
-        }
+    public void registerTypeAdapter(TypeAdapter typeAdapter) {
+        this.typeAdapters.add(typeAdapter);
     }
 }

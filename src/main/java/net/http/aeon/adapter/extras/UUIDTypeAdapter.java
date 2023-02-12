@@ -10,6 +10,11 @@ import java.util.UUID;
 public final class UUIDTypeAdapter extends TypeAdapter {
 
     @Override
+    public boolean isElement(Class<?> clazz) {
+        return clazz.equals(UUID.class);
+    }
+
+    @Override
     public ObjectUnit write(Object o) {
         return new ObjectPrimitive(o.toString());
     }
