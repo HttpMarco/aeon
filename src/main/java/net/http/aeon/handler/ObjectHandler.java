@@ -63,7 +63,7 @@ public final class ObjectHandler {
         }
         Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
         if (optional.isEmpty()) {
-            return new ObjectUnit.Null();
+            return null;
         }
         return optional.get().read(type, clazz, unit);
     }
