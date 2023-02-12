@@ -17,6 +17,7 @@
 package net.http.aeon.elements;
 
 import lombok.Getter;
+import net.http.aeon.Aeon;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,18 @@ public final class ObjectAssortment extends ObjectUnit {
 
     public void append(String key, ObjectUnit unit) {
         this.units.put(key, unit);
+    }
+
+    public void append(String key, Object serialazibleObject) {
+        this.units.put(key, Aeon.getObjectHandler().write(serialazibleObject.getClass(), serialazibleObject));
+    }
+
+    public void append(String key, String element) {
+        units.put(key, new ObjectPrimitive(element));
+    }
+
+    public void append(String key, int element) {
+        units.put(key, new ObjectPrimitive(element));
     }
 
     public ObjectUnit get(String key) {
