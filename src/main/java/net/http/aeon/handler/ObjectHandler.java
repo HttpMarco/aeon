@@ -27,28 +27,23 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Getter
-@SuppressWarnings({"unchecked"})
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{
             new ObjectSeriesLayer(),
-            new ObjectCollectionLayer(),
-            new ObjectEnumerationLayer(),
-            new ObjectPrimitiveLayer(),
+            new ObjectCollectionLayer(), new ObjectEnumerationLayer(),
+            new ObjectPrimitiveLayer(), new ObjectMapLayer(),
             new ObjectRecordLayer(), new ObjectAssortmentLayer(),
     };
 
     public ObjectUnit write(Class<?> clazz, Object object) {
-
         if (object == null) {
             return new ObjectUnit.Null();
         }
-
         if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(clazz)) {
             return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).write(object);
         }
         Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
-
         if (optional.isEmpty()) {
             return new ObjectUnit.Null();
         }
@@ -56,23 +51,22 @@ public final class ObjectHandler {
     }
 
     public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
-
         if (unit instanceof ObjectUnit.Null) {
             return null;
         }
-
         if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(clazz)) {
-            return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).read(type, clazz, unit);
+            try {
+                return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).read(type, clazz, unit);
+            } catch (Exception exception) {
+                return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).readCaughtException(exception);
+            }
         }
-
         Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
-
         if (optional.isEmpty()) {
             return new ObjectUnit.Null();
         }
         return optional.get().read(type, clazz, unit);
     }
-
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {
         return Arrays.stream(this.patterns).filter(it -> it.isElement(clazz)).findFirst();

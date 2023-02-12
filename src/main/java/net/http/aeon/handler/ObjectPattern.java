@@ -28,7 +28,7 @@ public interface ObjectPattern {
 
     Object read(Type type, Class<?> clazz, ObjectUnit unit);
 
-    default void readCaughtException(Exception exception) {
-        exception.printStackTrace();
+    default Object readCaughtException(Exception exception) {
+        return null;
     }
 }
