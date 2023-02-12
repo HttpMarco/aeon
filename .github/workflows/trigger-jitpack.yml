@@ -1,7 +1,7 @@
 name: Trigger Jitpack Build
 on:
   push:
-    branches: [ trunk ]
+    branches: [ master ]
 
   workflow_dispatch:
 jobs:

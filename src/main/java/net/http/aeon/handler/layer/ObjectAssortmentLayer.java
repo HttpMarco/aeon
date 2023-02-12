@@ -28,6 +28,12 @@ import java.util.Arrays;
 
 public final class ObjectAssortmentLayer implements ObjectPattern {
 
+    public static ObjectAssortmentLayer INSTANCE;
+
+    public ObjectAssortmentLayer() {
+        INSTANCE = this;
+    }
+
     @Override
     public boolean isElement(Class<?> clazz) {
         return true;
@@ -36,23 +42,13 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
-            ObjectUnit unit;
-            if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(it.getType())) {
-                try {
-                    it.setAccessible(true);
-                    unit = Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(it.getType()).write(it.get(value));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                unit = pattern.write(AeonReflections.get(it, value));
-                if (it.isAnnotationPresent(Comment.class)) {
-                    unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
-                }
+        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> {
+            var unit = Aeon.getObjectHandler().write(it.getType(), AeonReflections.get(it, value));
+            if (it.isAnnotationPresent(Comment.class)) {
+                unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
             }
             assortment.append(it.getName(), unit);
-        }));
+        });
         return assortment;
     }
 
@@ -60,16 +56,13 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
     public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
         var object = AeonReflections.allocate(clazz);
         if (unit instanceof ObjectAssortment assortment) {
-            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
-                if (assortment.get(it.getName()) != null) {
-                    if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(it.getType())) {
-                        AeonReflections.modify(it, object, Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(it.getType()).read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
-                    } else {
-                        AeonReflections.modify(it, object, pattern.read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
-                    }
+            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> {
+                if (assortment.has(it.getName())) {
+                    AeonReflections.modify(it, object, Aeon.getObjectHandler().read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
+                } else {
+                    AeonReflections.modify(it, object, null);
                 }
-                //TODO: add default handler
-            }));
+            });
         }
         return object;
     }

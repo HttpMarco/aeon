@@ -19,7 +19,8 @@ package net.http.aeon.elements;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter
+@Setter
+@Getter
 public abstract class ObjectUnit {
 
     private String[] comments;
@@ -30,6 +31,10 @@ public abstract class ObjectUnit {
 
     public ObjectPrimitive primitives() {
         return (ObjectPrimitive) this;
+    }
+
+    public static final class Null extends ObjectUnit {
+
     }
 
 }

@@ -25,4 +25,28 @@ public final class ObjectPrimitive extends ObjectUnit {
     @Getter
     private Object value;
 
+    public String asString() {
+        return value.toString();
+    }
+
+    public int asInt() {
+        return as(int.class);
+    }
+
+    public boolean asBoolean() {
+        return as(boolean.class);
+    }
+
+    public short asShort() {
+        return as(short.class);
+    }
+
+    public float asFloat() {
+        return as(float.class);
+    }
+
+    public <T> T as(Class<T> clazz) {
+        return (T) value;
+    }
+
 }

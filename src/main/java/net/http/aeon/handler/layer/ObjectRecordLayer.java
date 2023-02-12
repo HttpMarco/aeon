@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ObjectRecordLayer implements ObjectPattern {
+public final class ObjectRecordLayer implements ObjectPattern {
 
     @Override
     public boolean isElement(Class<?> clazz) {
@@ -23,28 +23,19 @@ public class ObjectRecordLayer implements ObjectPattern {
 
     @Override
     public ObjectUnit write(Object value) {
-        var assortment = new ObjectAssortment();
-        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
-            ObjectUnit unit = pattern.write(AeonReflections.get(it, value));
-            if (it.isAnnotationPresent(Comment.class)) {
-                unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
-            }
-            assortment.append(it.getName(), unit);
-        }));
-        return assortment;
+        return ObjectAssortmentLayer.INSTANCE.write(value);
     }
 
     @SneakyThrows
     @Override
     public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
-        Class<?>[] types = Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value]);
-        List<Object> typeObjects = new ArrayList<>();
+        var types = Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value]);
+        var typeObjects = new ArrayList<>();
         if (unit instanceof ObjectAssortment assortment) {
             Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
                 if (assortment.get(it.getName()) != null) {
                     typeObjects.add(pattern.read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
                 }
-                //TODO: add default handler
             }));
         }
         return clazz.getDeclaredConstructor(types).newInstance(typeObjects.toArray());
