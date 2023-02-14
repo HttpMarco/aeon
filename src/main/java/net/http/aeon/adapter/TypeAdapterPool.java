@@ -11,7 +11,7 @@ public final class TypeAdapterPool {
     public <T> Optional<TypeAdapter<T>> findIf(Class<T> clazz) {
         return typeAdapters.stream().filter(it -> {
             Class<?> type = (Class<?>) ((ParameterizedType) it.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            return type.equals(clazz) || (!clazz.isEnum() && findAllInterfaces(clazz).contains(type));
+            return type.equals(clazz) || (!clazz.isEnum() && findAllInterfaces(clazz).contains(type)) || type.getSuperclass().equals(clazz);
         }).map(typeAdapter -> (TypeAdapter<T>) typeAdapter).findFirst();
     }
 
