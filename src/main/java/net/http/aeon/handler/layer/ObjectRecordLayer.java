@@ -32,11 +32,11 @@ public final class ObjectRecordLayer implements ObjectPattern {
         var types = Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).toArray(value -> new Class<?>[value]);
         var typeObjects = new ArrayList<>();
         if (unit instanceof ObjectAssortment assortment) {
-            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> Aeon.getObjectHandler().findPattern(it.getType()).ifPresent(pattern -> {
+            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> {
                 if (assortment.get(it.getName()) != null) {
-                    typeObjects.add(pattern.read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
+                    typeObjects.add(Aeon.getObjectHandler().read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
                 }
-            }));
+            });
         }
         return clazz.getDeclaredConstructor(types).newInstance(typeObjects.toArray());
     }
