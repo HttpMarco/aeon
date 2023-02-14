@@ -18,7 +18,7 @@ package net.http.aeon.handler;
 
 import lombok.Getter;
 import net.http.aeon.Aeon;
-import net.http.aeon.elements.ObjectAssortment;
+import net.http.aeon.adapter.TypeAdapter;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.layer.*;
 
@@ -30,42 +30,47 @@ import java.util.Optional;
 public final class ObjectHandler {
 
     private final ObjectPattern[] patterns = new ObjectPattern[]{
-            new ObjectSeriesLayer(),
-            new ObjectCollectionLayer(), new ObjectEnumerationLayer(),
-            new ObjectPrimitiveLayer(), new ObjectMapLayer(),
-            new ObjectRecordLayer(), new ObjectAssortmentLayer(),
+            new ObjectSeriesLayer(), new ObjectCollectionLayer(), new ObjectEnumerationLayer(), new ObjectPrimitiveLayer(),
+            new ObjectMapLayer(), new ObjectRecordLayer(), new ObjectAssortmentLayer(),
     };
 
     public ObjectUnit write(Class<?> clazz, Object object) {
         if (object == null) {
             return new ObjectUnit.Null();
         }
-        if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(clazz)) {
-            return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).write(object);
+        Optional<? extends TypeAdapter<?>> adapter = Aeon.getTypeAdapterFactory().getTypeAdapterPool().findIf(clazz);
+        if (adapter.isPresent()) {
+            return adapter.get().writeInstance(object);
+        } else {
+            var optional = Aeon.getObjectHandler().findPattern(clazz);
+            if (optional.isEmpty()) {
+                return new ObjectUnit.Null();
+            }
+            return optional.get().write(object);
         }
-        Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
-        if (optional.isEmpty()) {
-            return new ObjectUnit.Null();
-        }
-        return optional.get().write(object);
     }
+
 
     public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
         if (unit instanceof ObjectUnit.Null) {
             return null;
         }
-        if (Aeon.getTypeAdapterFactory().getTypeAdapterPool().isPresent(clazz)) {
+        Optional<? extends TypeAdapter<?>> adapter = Aeon.getTypeAdapterFactory().getTypeAdapterPool().findIf(clazz);
+        if (adapter.isPresent()) {
             try {
-                return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).read(type, clazz, unit);
+                return adapter.get().readInstance(clazz, unit);
             } catch (Exception exception) {
-                return Aeon.getTypeAdapterFactory().getTypeAdapterPool().get(clazz).readCaughtException(exception);
+               // return adapter.get(clazz).readCaughtException(exception);
+                exception.printStackTrace();
+                return null;
             }
+        } else {
+            Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
+            if (optional.isEmpty()) {
+                return null;
+            }
+            return optional.get().read(type, clazz, unit);
         }
-        Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
-        if (optional.isEmpty()) {
-            return null;
-        }
-        return optional.get().read(type, clazz, unit);
     }
 
     public Optional<ObjectPattern> findPattern(Class<?> clazz) {

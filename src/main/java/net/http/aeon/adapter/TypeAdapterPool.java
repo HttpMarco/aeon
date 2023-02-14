@@ -1,20 +1,21 @@
 package net.http.aeon.adapter;
 
+import java.lang.reflect.ParameterizedType;
+
 import java.util.*;
 
 public final class TypeAdapterPool {
 
-    private final List<TypeAdapter> typeAdapters = new ArrayList<>();
+    private final List<TypeAdapter<?>> typeAdapters = new ArrayList<>();
 
-    public boolean isPresent(Class<?> clazz) {
-        return typeAdapters.stream().anyMatch(it -> it.isElement(clazz));
+    public <T> Optional<TypeAdapter<T>> findIf(Class<T> clazz) {
+        return typeAdapters.stream().filter(it -> {
+            Class<?> type = (Class<?>) ((ParameterizedType) it.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            return type.equals(clazz);
+        }).map(typeAdapter -> (TypeAdapter<T>) typeAdapter).findFirst();
     }
 
-    public TypeAdapter get(Class<?> clazz) {
-        return typeAdapters.stream().filter(it -> it.isElement(clazz)).findFirst().orElse(null);
-    }
-
-    public void registerTypeAdapter(TypeAdapter typeAdapter) {
+    public void registerTypeAdapter(TypeAdapter<?> typeAdapter) {
         this.typeAdapters.add(typeAdapter);
     }
 }

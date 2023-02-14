@@ -11,10 +11,9 @@ import java.util.UUID;
 public class TestConfiguration {
 
     @Getter
-    private Map<String, String> map;
+    private UUID uuid;
 
     public TestConfiguration() {
-        this.map = new HashMap<>();
-        this.map.put("1", "abc");
+        this.uuid = UUID.randomUUID();
     }
 }
