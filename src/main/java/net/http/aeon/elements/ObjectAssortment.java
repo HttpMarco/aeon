@@ -43,6 +43,18 @@ public final class ObjectAssortment extends ObjectUnit {
         units.put(key, new ObjectPrimitive(element));
     }
 
+    public void append(String key, double element) {
+        units.put(key, new ObjectPrimitive(element));
+    }
+
+    public void append(String key, float element) {
+        units.put(key, new ObjectPrimitive(element));
+    }
+
+    public void append(String key, boolean element) {
+        units.put(key, new ObjectPrimitive(element));
+    }
+
     public ObjectUnit get(String key) {
         return this.units.get(key);
     }
