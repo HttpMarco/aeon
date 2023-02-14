@@ -7,15 +7,15 @@ import net.http.aeon.elements.ObjectUnit;
 import java.lang.reflect.Type;
 import java.util.UUID;
 
-public final class UUIDTypeAdapter extends TypeAdapter {
+public final class UUIDTypeAdapter extends TypeAdapter<UUID> {
 
     @Override
-    public ObjectUnit write(Object o) {
-        return new ObjectPrimitive(o.toString());
+    public ObjectUnit write(UUID value) {
+        return new ObjectPrimitive(value.toString());
     }
 
     @Override
-    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
+    public UUID read(Class<UUID> value, ObjectUnit unit) {
         return UUID.fromString(unit.primitives().getValue().toString());
     }
 }

@@ -13,7 +13,6 @@ public final class TypeAdapterFactory {
     public TypeAdapterFactory() {
 
         //default uuid type adapter
-        this.typeAdapterPool.registerTypeAdapter(new UUIDTypeAdapter(), UUID.class);
-
+        this.typeAdapterPool.registerTypeAdapter(new UUIDTypeAdapter());
     }
 }

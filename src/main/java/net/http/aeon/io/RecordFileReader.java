@@ -43,11 +43,11 @@ public final class RecordFileReader extends DistanceElement {
     private int readElement(List<String> lines, ObjectUnit unit) {
         var line = lines.get(0);
         if (line.contains(": [")) {
-            return readAssortment(lines.subList(1, lines.size()), unit,line.split(": ")[0]);
+            return this.readAssortment(lines.subList(1, lines.size()), unit, line.split(": ")[0]);
         } else if (line.contains(": {")) {
             return this.readSeries(lines.subList(1, lines.size()), unit, line.split(": ")[0]);
         } else if (line.contains(": ")) {
-            return readPrimitive(unit, line.split(": "), line);
+            return this.readPrimitive(unit, line.split(": "), line);
         } else {
             throw new UnsupportedOperationException("Element: " + line);
         }
@@ -55,7 +55,7 @@ public final class RecordFileReader extends DistanceElement {
 
     private int readPrimitive(ObjectUnit unit, String[] elements, String line) {
         if (!(unit instanceof ObjectAssortment assortment)) return 1;
-        assortment.append(elements[0], new ObjectPrimitive(line.substring(elements[0].length() +2)));
+        assortment.append(elements[0], new ObjectPrimitive(line.substring(elements[0].length() + 2)));
         return 0;
     }
 

@@ -33,6 +33,10 @@ public abstract class ObjectUnit {
         return (ObjectPrimitive) this;
     }
 
+    public ObjectSeries series() {
+        return (ObjectSeries) this;
+    }
+
     public static final class Null extends ObjectUnit {
 
     }

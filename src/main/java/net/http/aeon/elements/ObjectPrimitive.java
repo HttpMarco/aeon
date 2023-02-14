@@ -18,6 +18,8 @@ package net.http.aeon.elements;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.http.aeon.Aeon;
+import net.http.aeon.reflections.AeonReflections;
 
 @AllArgsConstructor
 public final class ObjectPrimitive extends ObjectUnit {
@@ -30,23 +32,26 @@ public final class ObjectPrimitive extends ObjectUnit {
     }
 
     public int asInt() {
-        return as(int.class);
+        return Integer.parseInt(value.toString());
     }
 
     public boolean asBoolean() {
-        return as(boolean.class);
+        return Boolean.parseBoolean(value.toString());
     }
 
     public short asShort() {
-        return as(short.class);
+        return Short.parseShort(value.toString());
     }
 
     public float asFloat() {
-        return as(float.class);
+        return Float.parseFloat(value.toString());
     }
 
     public <T> T as(Class<T> clazz) {
-        return (T) value;
+        if (clazz.isPrimitive() || AeonReflections.isDefaultElement(clazz)) {
+            return (T) value;
+        } else {
+            return (T) Aeon.getObjectHandler().read(null, clazz, this);
+        }
     }
-
 }
