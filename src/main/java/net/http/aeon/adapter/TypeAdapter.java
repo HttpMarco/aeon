@@ -1,12 +1,8 @@
 package net.http.aeon.adapter;
 
-import lombok.Getter;
 import net.http.aeon.elements.ObjectUnit;
 
 public abstract class TypeAdapter<T> {
-
-    @Getter
-    private final Class<T> typeToken = (Class<T>) getClass();
 
     public ObjectUnit writeInstance(Object value) {
         return this.write((T) value);
