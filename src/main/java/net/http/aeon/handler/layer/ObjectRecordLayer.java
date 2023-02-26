@@ -8,6 +8,7 @@ import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public final class ObjectRecordLayer implements ObjectPattern {
                 }
             });
         }
-        return clazz.getDeclaredConstructor(types).newInstance(typeObjects.toArray());
+        Constructor<?> constructor = clazz.getDeclaredConstructor(types);
+        constructor.setAccessible(true);
+        return constructor.newInstance(typeObjects.toArray());
     }
 }
