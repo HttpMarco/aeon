@@ -39,6 +39,10 @@ public final class ObjectPrimitive extends ObjectUnit {
         return Boolean.parseBoolean(value.toString());
     }
 
+    public double asDouble() {
+        return Double.parseDouble(value.toString());
+    }
+
     public short asShort() {
         return Short.parseShort(value.toString());
     }
