@@ -17,29 +17,12 @@
 Gradle Dependency
 
 ````groovy
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-    implementation 'com.github.HttpMarco:Aeon:TAG'
-}
+implementation 'com.github.HttpMarco:Aeon:TAG'
 ````
-The newest version: https://jitpack.io/#HttpMarco/Aeon
 ****
 
 Maven Dependency
-
 ````xml
-
-<repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
-````
-
-````xml
-
 <dependency>
     <groupId>com.github.HttpMarco</groupId>
     <artifactId>Aeon</artifactId>

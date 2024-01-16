@@ -1,0 +1,9 @@
+[versions]
+
+jUnit = "5.10.1"
+lombok = "1.18.30"
+
+[libraries]
+
+jUnit = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jUnit" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }

@@ -1,47 +1,72 @@
 plugins {
-    id("java")
-    id("maven-publish")
+    id("java-library")
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
 }
 
-allprojects {
-    group = "net.http.aeon"
-    version = "1.2.1"
-    description = "Configuration Framework"
-}
+apply(plugin = "signing")
+apply(plugin = "maven-publish")
 
-repositories {
-    mavenCentral()
-}
+group = "dev.httpmarco"
+version = "1.2.1"
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
-    testCompileOnly("org.projectlombok:lombok:1.18.30")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
+    testImplementation(libs.jUnit)
+    testRuntimeOnly(libs.jUnit)
+
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+    testCompileOnly(libs.lombok)
+    testAnnotationProcessor(libs.lombok)
 }
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-tasks {
-    compileJava {
-        options.encoding = "UTF-8"
-    }
-    compileTestJava {
-        options.encoding = "UTF-8"
+tasks.register<org.gradle.jvm.tasks.Jar>("javadocJar") {
+    archiveClassifier.set("javadoc")
+    from(tasks.getByName("javadoc"))
+}
+
+tasks.register<org.gradle.jvm.tasks.Jar>("sourcesJar") {
+    archiveClassifier.set("sources")
+    from(project.the<SourceSetContainer>()["main"].allJava)
+}
+
+extensions.configure<PublishingExtension> {
+    publications.apply {
+        create("maven", MavenPublication::class.java).apply {
+            from(components.getByName("java"))
+
+            artifact(tasks.getByName("sourcesJar"))
+            artifact(tasks.getByName("javadocJar"))
+
+            pom.apply {
+                name.set(project.name)
+                url.set("https://github.com/HttpMarco/aeonn")
+                description.set("A de-/serialization library to manage simple configurations")
+
+                developers {}
+
+                licenses {}
+            }
+        }
     }
 }
 
-publishing {
-    publications {
-        create("maven_public", MavenPublication::class) {
-            groupId = "net.http.aeon"
-            artifactId = "Aeon"
-            version = "1.2.1"
-            from(components.getByName("java"))
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+
+            username.set(System.getenv("MAVEN_CENTRAL_CRADINATES_USERNAME"))
+            password.set(System.getenv("MAVEN_CENTRAL_CRADINATES_PASSWORD"))
         }
     }
+    useStaging.set(!project.version.toString().endsWith("-SNAPSHOT"))
 }
