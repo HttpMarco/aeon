@@ -16,10 +16,10 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.1")
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.24")
-    testCompileOnly("org.projectlombok:lombok:1.18.24")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.24")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    testCompileOnly("org.projectlombok:lombok:1.18.30")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
 tasks.getByName<Test>("test") {
