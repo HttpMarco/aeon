@@ -25,8 +25,7 @@ import java.lang.reflect.Field;
 public final class AeonReflections {
 
     @SuppressWarnings("sunapi")
-    public static final Unsafe unsafe;
-    public static final String EMTPY_STRING = "";
+    private static final Unsafe unsafe;
     private static final List<Class<?>> ELEMENTS = List.of(String.class, Integer.class,
         Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class);
 

@@ -27,6 +27,6 @@ public @interface Options  {
 
     String name() default "";
 
-    String path() default "";
+    String[] path() default "";
 
 }

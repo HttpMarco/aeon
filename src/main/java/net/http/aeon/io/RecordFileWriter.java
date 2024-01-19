@@ -36,8 +36,12 @@ public final class RecordFileWriter extends DistanceElement {
     public RecordFileWriter(ObjectUnit unit, Path path) {
         this.writeElement(null, unit, false);
 
-        if (!Files.exists(path) && path.toFile().getParentFile() != null) {
-            path.toFile().getParentFile().mkdirs();
+        if (!Files.exists(path) && path.getParent() != null) {
+          try {
+            Files.createDirectories(path.getParent());
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
         }
 
         try (var reader = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {

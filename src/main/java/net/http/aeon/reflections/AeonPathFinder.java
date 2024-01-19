@@ -18,21 +18,20 @@ package net.http.aeon.reflections;
 
 import net.http.aeon.annotations.Options;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class AeonPathFinder {
 
     public static Path find(Object value) {
-        var path = value.getClass().getSimpleName();
-        if(value.getClass().isAnnotationPresent(Options.class)) {
-            var opt = value.getClass().getAnnotation(Options.class);
-            path = (opt.path().isEmpty() ? AeonReflections.EMTPY_STRING : opt.path()) + (opt.name().isEmpty() ? value.getClass().getSimpleName() : opt.name());
+        final var options = value.getClass().getAnnotation(Options.class);
+        if (options != null) {
+            var path = Path.of(options.path()[0]);
+            for (int i = 1; i < options.path().length; i++) {
+              path = path.resolve(options.path()[i]);
+            }
+            return path
+                .resolve((options.name().isEmpty() ? value.getClass().getSimpleName() : options.name()));
         }
-        return Path.of(path);
-    }
-
-    public static boolean isPresent(Object value) {
-        return Files.exists(find(value));
+        return Path.of(value.getClass().getSimpleName());
     }
 }
