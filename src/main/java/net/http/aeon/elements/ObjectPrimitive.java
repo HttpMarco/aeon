@@ -21,10 +21,10 @@ import lombok.Getter;
 import net.http.aeon.Aeon;
 import net.http.aeon.reflections.AeonReflections;
 
+@Getter
 @AllArgsConstructor
 public final class ObjectPrimitive extends ObjectUnit {
 
-    @Getter
     private Object value;
 
     public String asString() {
@@ -53,9 +53,9 @@ public final class ObjectPrimitive extends ObjectUnit {
 
     public <T> T as(Class<T> clazz) {
         if (clazz.isPrimitive() || AeonReflections.isDefaultElement(clazz)) {
-            return (T) value;
+            return (T) this.value;
         } else {
-            return (T) Aeon.getObjectHandler().read(null, clazz, this);
+            return (T) Aeon.getObjectHandler().read(clazz, this);
         }
     }
 }

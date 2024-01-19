@@ -16,19 +16,19 @@
 
 package net.http.aeon.reflections;
 
+import java.util.List;
 import lombok.SneakyThrows;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
 
 public final class AeonReflections {
 
     @SuppressWarnings("sunapi")
     public static final Unsafe unsafe;
     public static final String EMTPY_STRING = "";
-    public static final Class<?>[] elements = new Class<?>[]{String.class, Integer.class, Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class};
+    private static final List<Class<?>> ELEMENTS = List.of(String.class, Integer.class,
+        Boolean.class, Short.class, Float.class, Byte.class, Double.class, Long.class);
 
     static {
         try {
@@ -59,7 +59,7 @@ public final class AeonReflections {
     }
 
     public static boolean isDefaultElement(Class<?> type) {
-        return Arrays.asList(elements).contains(type);
+        return ELEMENTS.contains(type);
     }
 
     @SneakyThrows

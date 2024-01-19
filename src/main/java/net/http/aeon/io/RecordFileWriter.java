@@ -16,11 +16,11 @@
 
 package net.http.aeon.io;
 
+import java.util.regex.Pattern;
 import net.http.aeon.elements.ObjectAssortment;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectSeries;
 import net.http.aeon.elements.ObjectUnit;
-import net.http.aeon.reflections.AeonReflections;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,10 +29,12 @@ import java.nio.file.Path;
 
 public final class RecordFileWriter extends DistanceElement {
 
+    private static final Pattern PATTERN = Pattern.compile("\n");
+
     private final StringBuilder builder = new StringBuilder();
 
     public RecordFileWriter(ObjectUnit unit, Path path) {
-        writeElement(null, unit, false);
+        this.writeElement(null, unit, false);
 
         if (!Files.exists(path) && path.toFile().getParentFile() != null) {
             path.toFile().getParentFile().mkdirs();
@@ -48,14 +50,18 @@ public final class RecordFileWriter extends DistanceElement {
     private void writeElement(String key, ObjectUnit unit, boolean seriesElement) {
         if (unit.getComments() != null) {
             for (String comment : unit.getComments()) {
-                builder.append(space()).append("# ").append(comment).append(NEXT_LINE);
+                this.builder
+                    .append(this.space())
+                    .append("# ")
+                    .append(comment)
+                    .append(NEXT_LINE);
             }
         }
 
         if (key == null && unit instanceof ObjectAssortment assortment && !seriesElement) {
             assortment.getUnits().forEach((s, unit1) -> writeElement(s, unit1, false));
-        } else if (unit instanceof ObjectUnit.Null) {
-            this.writePrimitive(new ObjectPrimitive(null), key, seriesElement);
+        } else if (unit == ObjectUnit.NULL) {
+            this.writeNull(key, seriesElement);
         } else if (unit instanceof ObjectAssortment assortment) {
             this.writeAssortment(key, assortment, seriesElement);
         } else if (unit instanceof ObjectSeries series) {
@@ -65,6 +71,13 @@ public final class RecordFileWriter extends DistanceElement {
         } else throw new UnsupportedOperationException();
     }
 
+    private void writeNull(final String key, final boolean seriesElement) {
+        this.writeBasis(key, seriesElement);
+        this.builder
+            .append((String) null)
+            .append(NEXT_LINE);
+    }
+
     private void writeAssortment(String key, ObjectAssortment assortment, boolean seriesElement) {
         this.writeBlockElement(key, () -> assortment.getUnits().forEach((s, unit) -> writeElement(s, unit, false)), '[', ']', seriesElement);
     }
@@ -72,7 +85,7 @@ public final class RecordFileWriter extends DistanceElement {
     private void writeSeries(String key, ObjectSeries series) {
         this.writeBlockElement(key, () -> {
             for (int i = 0; i < series.getUnits().size(); i++) {
-                writeElement(null, series.getUnits().get(i), true);
+                this.writeElement(null, series.getUnits().get(i), true);
                 if (i < series.getUnits().size() - 1) {
                     this.builder.delete(this.builder.length() - 1, this.builder.length()).append(",\n");
                 }
@@ -81,12 +94,27 @@ public final class RecordFileWriter extends DistanceElement {
     }
 
     private void writePrimitive(ObjectPrimitive primitive, String key, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(primitive.getValue() == null ? null : primitive.getValue().toString().replaceAll("\n", "\\\\n")).append(NEXT_LINE);
+        this.writeBasis(key, seriesElement);
+        this.builder
+            .append(PATTERN.matcher(primitive.getValue().toString()).replaceAll("\\\\n"))
+            .append(NEXT_LINE);
     }
 
     private void writeBlockElement(String key, Runnable handle, char openSymbol, char closeSymbol, boolean seriesElement) {
-        this.builder.append(space()).append(seriesElement ? AeonReflections.EMTPY_STRING : key + ": ").append(openSymbol).append(NEXT_LINE);
+        this.writeBasis(key, seriesElement);
+        this.builder
+            .append(openSymbol)
+            .append(NEXT_LINE);
         this.blockSet(handle);
-        this.builder.append(space()).append(closeSymbol).append(NEXT_LINE);
+        this.builder.append(this.space())
+            .append(closeSymbol)
+            .append(NEXT_LINE);
+    }
+
+    private void writeBasis(final String key, final boolean seriesElement) {
+        this.builder.append(this.space());
+        if (!seriesElement) {
+            this.builder.append(key).append(": ");
+        }
     }
 }

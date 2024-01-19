@@ -16,13 +16,13 @@
 
 package net.http.aeon.handler.layer;
 
+import java.lang.reflect.Type;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
 
 import java.beans.PropertyEditorManager;
-import java.lang.reflect.Type;
 
 public final class ObjectPrimitiveLayer implements ObjectPattern {
 
@@ -37,11 +37,11 @@ public final class ObjectPrimitiveLayer implements ObjectPattern {
     }
 
     @Override
-    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, ObjectUnit unit) {
         if (!(unit instanceof ObjectPrimitive primitive)) {
             throw new UnsupportedOperationException("This is not a correct primitive type.");
         }
-        var editor = PropertyEditorManager.findEditor(clazz);
+        var editor = PropertyEditorManager.findEditor((Class<?>) type);
         editor.setAsText(primitive.getValue().toString());
         return editor.getValue();
     }

@@ -4,7 +4,6 @@ import net.http.aeon.adapter.TypeAdapter;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 
-import java.lang.reflect.Type;
 import java.util.UUID;
 
 public final class UUIDTypeAdapter extends TypeAdapter<UUID> {

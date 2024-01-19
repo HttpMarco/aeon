@@ -18,8 +18,9 @@ package net.http.aeon.io;
 
 public abstract class DistanceElement {
 
+    public static final String NEXT_LINE = "\n";
+
     private int distance = 0;
-    public String NEXT_LINE = "\n";
 
     public String space() {
         return " ".repeat(distance * 3);

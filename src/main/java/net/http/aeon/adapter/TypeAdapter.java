@@ -4,10 +4,11 @@ import net.http.aeon.elements.ObjectUnit;
 
 public abstract class TypeAdapter<T> {
 
-    public ObjectUnit writeInstance(Object value) {
-        return this.write((T) value);
+    public ObjectUnit writeInstance(T value) {
+        return this.write(value);
     }
 
+    @SuppressWarnings("unchecked")
     public Object readInstance(Class<?> value, ObjectUnit unit) {
         return this.read((Class<T>) value, unit);
     }

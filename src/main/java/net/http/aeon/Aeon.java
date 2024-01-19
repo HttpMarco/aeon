@@ -19,7 +19,6 @@ package net.http.aeon;
 import lombok.Getter;
 import lombok.NonNull;
 import net.http.aeon.adapter.TypeAdapterFactory;
-import net.http.aeon.adapter.TypeAdapterPool;
 import net.http.aeon.annotations.Options;
 import net.http.aeon.handler.ObjectHandler;
 import net.http.aeon.io.RecordFileReader;
@@ -47,12 +46,12 @@ public final class Aeon {
         path = Path.of(path + ".ae");
 
         if (Files.exists(path)) {
-            var element = (T) objectHandler.read(null, value.getClass(), new RecordFileReader(path).getObjectAssortment());
+            var element = (T) objectHandler.read(value.getClass(), new RecordFileReader(path).getObjectAssortment());
             //overwrite existing property
-            new RecordFileWriter(objectHandler.write(value.getClass(), element), path);
+            new RecordFileWriter(objectHandler.write(element), path);
             return element;
         }
-        new RecordFileWriter(objectHandler.write(value.getClass(), value), path);
+        new RecordFileWriter(objectHandler.write(value), path);
         return value;
     }
 
