@@ -1,6 +1,6 @@
 plugins {
     id("java-library")
-    id("io.github.gradle-nexus.publish-plugin") version "2.0.0-rc-1"
+    alias(libs.plugins.nexus.publish)
 }
 
 apply(plugin = "signing")

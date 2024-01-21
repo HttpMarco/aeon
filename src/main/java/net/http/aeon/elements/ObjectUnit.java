@@ -23,6 +23,8 @@ import lombok.Setter;
 @Getter
 public abstract class ObjectUnit {
 
+    public static final ObjectUnit NULL = new ObjectUnit() {};
+
     private String[] comments;
 
     public ObjectAssortment assortment() {
@@ -36,9 +38,4 @@ public abstract class ObjectUnit {
     public ObjectSeries series() {
         return (ObjectSeries) this;
     }
-
-    public static final class Null extends ObjectUnit {
-
-    }
-
 }

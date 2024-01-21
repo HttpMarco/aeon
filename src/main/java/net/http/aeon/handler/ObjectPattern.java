@@ -26,7 +26,7 @@ public interface ObjectPattern {
 
     ObjectUnit write(Object o);
 
-    Object read(Type type, Class<?> clazz, ObjectUnit unit);
+    Object read(Type type, ObjectUnit unit);
 
     default Object readCaughtException(Exception exception) {
         exception.printStackTrace();

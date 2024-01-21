@@ -24,7 +24,6 @@ import net.http.aeon.handler.ObjectPattern;
 import net.http.aeon.reflections.AeonReflections;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 
 public final class ObjectAssortmentLayer implements ObjectPattern {
 
@@ -42,27 +41,29 @@ public final class ObjectAssortmentLayer implements ObjectPattern {
     @Override
     public ObjectUnit write(Object value) {
         var assortment = new ObjectAssortment();
-        Arrays.stream(value.getClass().getDeclaredFields()).forEach(it -> {
-            var unit = Aeon.getObjectHandler().write(it.getType(), AeonReflections.get(it, value));
-            if (it.isAnnotationPresent(Comment.class)) {
-                unit.setComments(it.getDeclaredAnnotation(Comment.class).comment());
+        for (final var field : value.getClass().getDeclaredFields()) {
+            var unit = Aeon.getObjectHandler().write(AeonReflections.get(field, value));
+            if (field.isAnnotationPresent(Comment.class)) {
+                unit.setComments(field.getDeclaredAnnotation(Comment.class).comment());
             }
-            assortment.append(it.getName(), unit);
-        });
+            assortment.append(field.getName(), unit);
+        }
         return assortment;
     }
 
     @Override
-    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, ObjectUnit unit) {
+        final var clazz = (Class<?>) type;
         var object = AeonReflections.allocate(clazz);
         if (unit instanceof ObjectAssortment assortment) {
-            Arrays.stream(clazz.getDeclaredFields()).forEach(it -> {
-                if (assortment.has(it.getName())) {
-                    AeonReflections.modify(it, object, Aeon.getObjectHandler().read(it.getGenericType(), it.getType(), assortment.get(it.getName())));
+            for (final var field : clazz.getDeclaredFields()) {
+                if (assortment.has(field.getName())) {
+                    AeonReflections.modify(field, object, Aeon.getObjectHandler()
+                        .read(field.getGenericType(), assortment.get(field.getName())));
                 } else {
-                    AeonReflections.modify(it, object, null);
+                    AeonReflections.modify(field, object, null);
                 }
-            });
+            }
         }
         return object;
     }

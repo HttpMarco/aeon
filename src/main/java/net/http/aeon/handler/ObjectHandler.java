@@ -16,9 +16,9 @@
 
 package net.http.aeon.handler;
 
+import java.lang.reflect.ParameterizedType;
 import lombok.Getter;
 import net.http.aeon.Aeon;
-import net.http.aeon.adapter.TypeAdapter;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.layer.*;
 
@@ -34,28 +34,38 @@ public final class ObjectHandler {
             new ObjectMapLayer(), new ObjectRecordLayer(), new ObjectAssortmentLayer(),
     };
 
-    public ObjectUnit write(Class<?> clazz, Object object) {
+    public <T> ObjectUnit write(T object) {
         if (object == null) {
-            return new ObjectUnit.Null();
+            return ObjectUnit.NULL;
         }
-        Optional<? extends TypeAdapter<?>> adapter = Aeon.getTypeAdapterFactory().getTypeAdapterPool().findIf(clazz);
+        @SuppressWarnings("unchecked")
+        final var clazz = (Class<T>) object.getClass();
+        final var adapter = Aeon.getTypeAdapterFactory().getTypeAdapterPool().findIf(clazz);
         if (adapter.isPresent()) {
             return adapter.get().writeInstance(object);
         } else {
             var optional = Aeon.getObjectHandler().findPattern(clazz);
             if (optional.isEmpty()) {
-                return new ObjectUnit.Null();
+                return ObjectUnit.NULL;
             }
             return optional.get().write(object);
         }
     }
 
 
-    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
-        if (unit instanceof ObjectUnit.Null) {
+    public Object read(Type type, ObjectUnit unit) {
+        if (unit == ObjectUnit.NULL) {
             return null;
         }
-        Optional<? extends TypeAdapter<?>> adapter = Aeon.getTypeAdapterFactory().getTypeAdapterPool().findIf(clazz);
+        Class<?> clazz = null;
+        if (type instanceof Class<?>) {
+            clazz = (Class<?>) type;
+        } else if (type instanceof ParameterizedType parameterizedType) {
+            clazz = (Class<?>) parameterizedType.getRawType();
+        }
+
+        final var adapter = Aeon.getTypeAdapterFactory()
+            .getTypeAdapterPool().findIf(clazz);
         if (adapter.isPresent()) {
             try {
                 return adapter.get().readInstance(clazz, unit);
@@ -65,11 +75,9 @@ public final class ObjectHandler {
                 return null;
             }
         } else {
-            Optional<ObjectPattern> optional = Aeon.getObjectHandler().findPattern(clazz);
-            if (optional.isEmpty()) {
-                return null;
-            }
-            return optional.get().read(type, clazz, unit);
+            return Aeon.getObjectHandler().findPattern(clazz)
+                .map(objectPattern -> objectPattern.read(type, unit))
+                .orElse(null);
         }
     }
 

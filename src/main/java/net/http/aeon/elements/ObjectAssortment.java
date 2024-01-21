@@ -22,9 +22,9 @@ import net.http.aeon.Aeon;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public final class ObjectAssortment extends ObjectUnit {
 
-    @Getter
     private final Map<String, ObjectUnit> units = new HashMap<>();
 
     public void append(String key, ObjectUnit unit) {
@@ -32,27 +32,31 @@ public final class ObjectAssortment extends ObjectUnit {
     }
 
     public void append(String key, Object serialazibleObject) {
-        this.units.put(key, Aeon.getObjectHandler().write(serialazibleObject.getClass(), serialazibleObject));
+        this.units.put(key, Aeon.getObjectHandler().write(serialazibleObject));
     }
 
     public void append(String key, String element) {
-        units.put(key, new ObjectPrimitive(element));
+        if (element == null) {
+            this.units.put(key, ObjectUnit.NULL);
+            return;
+        }
+        this.units.put(key, new ObjectPrimitive(element));
     }
 
     public void append(String key, int element) {
-        units.put(key, new ObjectPrimitive(element));
+        this.units.put(key, new ObjectPrimitive(element));
     }
 
     public void append(String key, double element) {
-        units.put(key, new ObjectPrimitive(element));
+        this.units.put(key, new ObjectPrimitive(element));
     }
 
     public void append(String key, float element) {
-        units.put(key, new ObjectPrimitive(element));
+        this.units.put(key, new ObjectPrimitive(element));
     }
 
     public void append(String key, boolean element) {
-        units.put(key, new ObjectPrimitive(element));
+        this.units.put(key, new ObjectPrimitive(element));
     }
 
     public ObjectUnit get(String key) {

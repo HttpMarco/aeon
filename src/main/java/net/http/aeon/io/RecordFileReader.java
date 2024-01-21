@@ -27,14 +27,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+@Getter
 public final class RecordFileReader extends DistanceElement {
 
-    @Getter
     private final ObjectAssortment objectAssortment = new ObjectAssortment();
 
     @SneakyThrows
     public RecordFileReader(Path path) {
-        var lines = Files.readAllLines(path).stream().map(String::trim).filter(it -> !(it.isEmpty() || it.startsWith("#"))).toList();
+        var lines = Files.readAllLines(path).stream()
+            .map(String::trim)
+            .filter(it -> !(it.isEmpty() || it.startsWith("#")))
+            .toList();
         for (var index = 0; index < lines.size(); index++) {
             index += readElement(lines.subList(index, lines.size()), objectAssortment);
         }

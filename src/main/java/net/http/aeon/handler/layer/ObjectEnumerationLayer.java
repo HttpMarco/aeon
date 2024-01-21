@@ -1,10 +1,10 @@
 package net.http.aeon.handler.layer;
 
+import java.lang.reflect.Type;
 import net.http.aeon.elements.ObjectPrimitive;
 import net.http.aeon.elements.ObjectUnit;
 import net.http.aeon.handler.ObjectPattern;
 
-import java.lang.reflect.Type;
 import java.util.Locale;
 
 public final class ObjectEnumerationLayer implements ObjectPattern {
@@ -19,10 +19,11 @@ public final class ObjectEnumerationLayer implements ObjectPattern {
         return new ObjectPrimitive(((Enum<?>) object).name());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Object read(Type type, Class<?> clazz, ObjectUnit unit) {
+    public Object read(Type type, ObjectUnit unit) {
         if (unit instanceof ObjectPrimitive primitive) {
-            var enumClass = (Class<? extends Enum>) clazz;
+            var enumClass = (Class<? extends Enum>) type;
             try {
                 return Enum.valueOf(enumClass, primitive.getValue().toString().toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException exception) {
