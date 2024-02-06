@@ -7,7 +7,7 @@ apply(plugin = "signing")
 apply(plugin = "maven-publish")
 
 group = "dev.httpmarco"
-version = "1.2.1"
+version = "1.2.0.1-SNAPSHOT"
 
 dependencies {
     testImplementation(libs.jUnit)
@@ -23,50 +23,53 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-tasks.register<org.gradle.jvm.tasks.Jar>("javadocJar") {
-    archiveClassifier.set("javadoc")
-    from(tasks.getByName("javadoc"))
-}
-
-tasks.register<org.gradle.jvm.tasks.Jar>("sourcesJar") {
-    archiveClassifier.set("sources")
-    from(project.the<SourceSetContainer>()["main"].allJava)
+tasks.withType<JavaCompile> {
+    sourceCompatibility = JavaVersion.VERSION_17.toString()
+    targetCompatibility = JavaVersion.VERSION_17.toString()
+    // options
+    options.encoding = "UTF-8"
+    options.isIncremental = true
 }
 
 extensions.configure<PublishingExtension> {
-    publications.apply {
-        create("maven", MavenPublication::class.java).apply {
-            from(components.getByName("java"))
+    publications {
+        create("library", MavenPublication::class.java) {
+            from(project.components.getByName("java"))
 
-            artifact(tasks.getByName("sourcesJar"))
-            artifact(tasks.getByName("javadocJar"))
-
-            pom.apply {
+            pom {
                 name.set(project.name)
-                url.set("https://github.com/HttpMarco/aeonn")
-                description.set("A de-/serialization library to manage simple configurations")
-
-                developers {}
-
-                licenses {}
+                url.set("https://github.com/httpmarco/osgon")
+                description.set("Reflection/Data libary")
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        name.set("Mirco Lindenau")
+                        email.set("mirco.lindenau@gmx.de")
+                    }
+                }
+                scm {
+                    url.set("https://github.com/httpmarco/osgon")
+                    connection.set("https://github.com/httpmarco/osgon.git")
+                }
             }
         }
     }
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-}
-
 nexusPublishing {
     repositories {
         sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"))
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
 
-            username.set(System.getenv("MAVEN_CENTRAL_CRADINATES_USERNAME"))
-            password.set(System.getenv("MAVEN_CENTRAL_CRADINATES_PASSWORD"))
+            username.set(System.getenv("ossrhUsername")?.toString() ?: "")
+            password.set(System.getenv("ossrhPassword")?.toString() ?: "")
         }
     }
-    useStaging.set(!project.version.toString().endsWith("-SNAPSHOT"))
+    useStaging.set(!project.rootProject.version.toString().endsWith("-SNAPSHOT"))
 }

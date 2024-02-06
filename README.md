@@ -29,9 +29,6 @@ Maven Dependency
     <version>Tag</version>
 </dependency>
 ````
-
-
-The newest version: https://jitpack.io/#HttpMarco/Aeon
 ***
 
 Examples
@@ -77,17 +74,6 @@ Add header or spaces for configuration field
 `````java 
 @Comment(comment = "Test comment", type = Emphasizing.PRIMARY)
 `````
-
-****
-
-Aeon vs Gson
-
-- New fields are automatically added to the file. (Best option for updates)
-- Rename simple fields
-- Add comments or spacers.
-- Work faster than Gson.
-- Easy handling of configurations
-- ignores upper and lower case for enumeration serialization
 
 ****
 
