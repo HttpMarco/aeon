@@ -17,5 +17,5 @@ pluginManagement {
 }
 
 
-rootProject.name = "Aeon"
+rootProject.name = "aeon"
 
