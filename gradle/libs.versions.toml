@@ -2,7 +2,7 @@
 
 jUnit = "5.10.2"
 lombok = "1.18.32"
-nexus-publish = "2.0.0-rc-2"
+nexus-publish = "2.0.0"
 
 [libraries]
 
