@@ -1,6 +1,6 @@
 [versions]
 
-jUnit = "5.11.3"
+jUnit = "5.12.0"
 lombok = "1.18.36"
 nexus-publish = "2.0.0"
 
